@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node / Python examples
+node_modules/
+__pycache__/
+
+# Large data files
+*.zip
+*.tar
+*.log
+*.mp4
+
+processed_data/old_try/
+starting_data/

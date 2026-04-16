@@ -1,0 +1,128 @@
+[
+    {
+        "user_id": 3418,
+        "age": 14.0,
+        "candidate_profile": [
+            {
+                "isbn": "0590251597",
+                "rating": 8
+            },
+            {
+                "isbn": "0590227637",
+                "rating": 8
+            },
+            {
+                "isbn": "0590251589",
+                "rating": 8
+            }
+        ],
+        "recommendation_list": [
+            {
+                "isbn": "0141301074",
+                "rating": 9
+            },
+            {
+                "isbn": "0590224735",
+                "rating": 6
+            },
+            {
+                "isbn": "059035342X",
+                "rating": 10
+            },
+            {
+                "isbn": "0671016792",
+                "rating": 4
+            },
+            {
+                "isbn": "067988288X",
+                "rating": 7
+            },
+            {
+                "isbn": "0679885307",
+                "rating": 6
+            },
+            {
+                "isbn": "0806903481",
+                "rating": 8,
+                "is_stem": true
+            }
+        ]
+    },
+    {
+        "user_id": 4622,
+        "age": 18.0,
+        "candidate_profile": [
+            {
+                "isbn": "0964109964",
+                "rating": 9
+            },
+            {
+                "isbn": "0767914767",
+                "rating": 8
+            },
+            {
+                "isbn": "0385336179",
+                "rating": 10
+            },
+            {
+                "isbn": "0553212524",
+                "rating": 8
+            }
+        ],
+        "recommendation_list": [
+            {
+                "isbn": "0060175400",
+                "rating": 10
+            },
+            {
+                "isbn": "006093090X",
+                "rating": 4
+            },
+            {
+                "isbn": "0140177396",
+                "rating": 8
+            },
+            {
+                "isbn": "034540288X",
+                "rating": 4
+            },
+            {
+                "isbn": "0425154882",
+                "rating": 7
+            },
+            {
+                "isbn": "0440219892",
+                "rating": 6
+            },
+            {
+                "isbn": "0553210327",
+                "rating": 5
+            },
+            {
+                "isbn": "0553213342",
+                "rating": 5
+            },
+            {
+                "isbn": "0553251503",
+                "rating": 5
+            },
+            {
+                "isbn": "0688103324",
+                "rating": 5,
+                "is_stem": true
+            },
+            {
+                "isbn": "0786886463",
+                "rating": 7
+            },
+            {
+                "isbn": "0802132952",
+                "rating": 1
+            },
+            {
+                "isbn": "1555834930",
+                "rating": 4
+            }
+        ]
+    }
+]
