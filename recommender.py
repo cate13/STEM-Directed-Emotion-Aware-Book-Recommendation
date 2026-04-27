@@ -95,4 +95,4 @@ def test_weights(emotion_type="emotion", topic_type="tf_idf"):
 
 #recomend(TEST_DATA_FILE, emotion_type="emotion", topic_type="tf_idf")
 
-test_weights()
+test_weights(topic_type="sentance_bert")

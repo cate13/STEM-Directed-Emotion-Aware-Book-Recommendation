@@ -499,4 +499,4 @@ def compare_baseline_to_others_llm():
 
 #compare_baseline_to_others(target_folder="recommendations/1_plus_stem_books", baseline_filename="recommendation_using_emotion_intensity_sentance_bert.json", output_filename="Wilcoxon_compared_to_emotion_intensity_s_bert.csv")
 
-aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_tf_idf")
+aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_sentance_bert")
