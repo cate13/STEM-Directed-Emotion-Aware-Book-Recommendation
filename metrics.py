@@ -514,10 +514,10 @@ def compare_baseline_to_others_llm():
 
 
 
-# print(calculate_metrics("recommendations/1_plus_stem_books/with_stem_and_emotion/user_rankings_result_mistral.json", is_llm=True))
+print(calculate_metrics("recommendations/1_plus_stem_books_weight/emotion_with_weight_0.001__empath_with_weight_1.0.json", is_llm=False))
 
 # compare_baseline_to_others_llm()
 
 #compare_baseline_to_others(target_folder="recommendations/1_plus_stem_books", baseline_filename="recommendation_using_emotion_intensity_sentance_bert.json", output_filename="Wilcoxon_compared_to_emotion_intensity_s_bert.csv")
 
-aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_empath")
+# aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_empath")
