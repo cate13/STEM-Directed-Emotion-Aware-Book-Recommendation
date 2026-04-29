@@ -75,21 +75,31 @@ def handle_user(user):
     # return rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5
 
     only_stem = [item for item in filtered if item.get('is_stem') is True]
-
-    if len(only_stem) >= 10:
+    if len(only_stem) >= 2:
         scores = [rec["cos"] for rec in only_stem]
         ratings = [rec["rating"] for rec in only_stem]
-        rho, p_value = stats.spearmanr(scores, ratings)
-
         y_score = np.array([scores]) 
         y_true = np.array([ratings])
-        
+
         ndcg_2 = ndcg_score(y_true, y_score, k=2)
-        ndcg_3 = ndcg_score(y_true, y_score, k=3)
-        ndcg_5 = ndcg_score(y_true, y_score, k=5)
-        return rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5
+        ndcg_3 = None
+        ndcg_5 = None
+        ndcg_10 = None
+        rho = None
+
+
+        if len(only_stem) >= 3:
+            ndcg_3 = ndcg_score(y_true, y_score, k=3)
+
+            if len(only_stem) >= 5:
+                ndcg_5 = ndcg_score(y_true, y_score, k=5)
+
+                if len(only_stem) >= 10:
+                    ndcg_10 = ndcg_score(y_true, y_score, k=10)
+                    rho, _ = stats.spearmanr(scores, ratings)
+        return rr, p1, p3, p5, (abs(rho) if rho is not None else None), ndcg_2, ndcg_3, ndcg_5, ndcg_10
     else:
-        return rr, p1, p3, p5, None, None, None, None
+        return rr, p1, p3, p5, None, None, None, None, None
 
 
 def evaluate_file(file_path):
@@ -104,9 +114,10 @@ def evaluate_file(file_path):
     ndcg_2_list = []
     ndcg_3_list = []
     ndcg_5_list = []
+    ndcg_10_list = []
 
     for record in records:
-        rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5 = handle_user(record)
+        rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5, ndcg_10 = handle_user(record)
 
         rr_list.append(rr)
         p1_list.append(p1)
@@ -117,6 +128,7 @@ def evaluate_file(file_path):
         ndcg_2_list.append(ndcg_2)
         ndcg_3_list.append(ndcg_3)
         ndcg_5_list.append(ndcg_5)
+        ndcg_10_list.append(ndcg_10)
 
     return {
         "mrr" : rr_list,
@@ -127,6 +139,7 @@ def evaluate_file(file_path):
         "NDCG_2" : ndcg_2_list,
         "NDCG_3" : ndcg_3_list,
         "NDCG_5" : ndcg_5_list,
+        "NDCG_10" : ndcg_10_list,
     }
 
 def calculate_metrics(file_path, is_llm = False):
@@ -143,6 +156,7 @@ def calculate_metrics(file_path, is_llm = False):
     ndcg_2_list = results["NDCG_2"]
     ndcg_3_list = results["NDCG_3"]
     ndcg_5_list = results["NDCG_5"]
+    ndcg_10_list = results["NDCG_10"]
 
     mrr = np.mean(rr_list)
     overall_p1 = np.mean(p1_list)
@@ -161,6 +175,9 @@ def calculate_metrics(file_path, is_llm = False):
     clean_ndcg_5 = [x for x in ndcg_5_list if x is not None and not math.isnan(x)]
     ndcg_5 = np.mean(clean_ndcg_5)
 
+    clean_ndcg_10 = [x for x in ndcg_10_list if x is not None and not math.isnan(x)]
+    ndcg_10 = np.mean(clean_ndcg_10)
+
     return {
         "mrr" : mrr,
         "P@1" : overall_p1,
@@ -170,6 +187,7 @@ def calculate_metrics(file_path, is_llm = False):
         "NDCG_2" : ndcg_2,
         "NDCG_3" : ndcg_3,
         "NDCG_5" : ndcg_5,
+        "NDCG_10" : ndcg_10,
     }
     
 
@@ -383,6 +401,7 @@ def evaluate_llm_file(llm_path):
     ndcg_2_list = []
     ndcg_3_list = []
     ndcg_5_list = []
+    ndcg_10_list = []
     with open(llm_path, "r", encoding="utf-8") as f:
         records = json.load(f)
     
@@ -401,7 +420,7 @@ def evaluate_llm_file(llm_path):
         if user_data_id != llm_output_user_id:
             print("user ids don't match {user_data_id} {llm_output_user_id}")
         else:
-            rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5 = handle_user(convert_llm_to_recommendations(records[i], user_start[i], user_data_id))
+            rr, p1, p3, p5, rho, ndcg_2, ndcg_3, ndcg_5, ndcg_10 = handle_user(convert_llm_to_recommendations(records[i], user_start[i], user_data_id))
             rr_list.append(rr)
             p1_list.append(p1)
             p3_list.append(p3)
@@ -411,6 +430,7 @@ def evaluate_llm_file(llm_path):
             ndcg_2_list.append(ndcg_2)
             ndcg_3_list.append(ndcg_3)
             ndcg_5_list.append(ndcg_5)
+            ndcg_10_list.append(ndcg_10)
 
     return {
         "mrr" : rr_list,
@@ -421,6 +441,7 @@ def evaluate_llm_file(llm_path):
         "NDCG_2" : ndcg_2_list,
         "NDCG_3" : ndcg_3_list,
         "NDCG_5" : ndcg_5_list,
+        "NDCG_10" : ndcg_10_list,
     }
 
 
@@ -499,4 +520,4 @@ def compare_baseline_to_others_llm():
 
 #compare_baseline_to_others(target_folder="recommendations/1_plus_stem_books", baseline_filename="recommendation_using_emotion_intensity_sentance_bert.json", output_filename="Wilcoxon_compared_to_emotion_intensity_s_bert.csv")
 
-aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_sentance_bert")
+aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_empath")
