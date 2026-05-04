@@ -283,7 +283,7 @@ def filter_for_4_highly_rated_books(starting_users):
                  
     return matching_users       
 
-def filter_for_10_high_rated_books(starting_users, stem_books):
+def filter_for_x_high_rated_books(starting_users, stem_books, book_count):
     matching_users = []
 
     for user in starting_users:
@@ -296,7 +296,7 @@ def filter_for_10_high_rated_books(starting_users, stem_books):
             if rating >= 7:
                 high_rating_count += 1
 
-        if high_rating_count >= 10:
+        if high_rating_count >= book_count:
             matching_users.append(user)
                  
     return matching_users   
@@ -304,13 +304,13 @@ def filter_for_10_high_rated_books(starting_users, stem_books):
 def get_60_40_split():
     stem_isbns = load_stem_isbns([STEM_BOOKS_PATH_1, STEM_BOOKS_PATH_2, STEM_BOOKS_PATH_3])
     users = get_users_with_at_least_1_STEM_book(stem_isbns)
-    user_with_10 = filter_for_10_high_rated_books(users, stem_isbns)
+    user_with_10 = filter_for_x_high_rated_books(users, stem_isbns, 6)
     print(len(user_with_10))
 
     formatted_users = format_matching_users(user_with_10, stem_isbns)
 
     out_file_path = os.path.join(
-        BASE_DIR, "user_eval_sets", "users_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json"
+        BASE_DIR, "user_eval_sets", "users_1_plus_STEM_books_and_6_plus_high_rated_split_60_40.json"
     )
 
     with open(out_file_path, 'w', encoding='utf-8') as f:
