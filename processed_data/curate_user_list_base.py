@@ -8,7 +8,7 @@ USERS_PATH = os.path.join(BASE_DIR, "starting_data", "Users.csv")
 RATINGS_PATH = os.path.join(BASE_DIR, "starting_data", "Ratings.csv")
 OUTPUT_PATH = os.path.join(BASE_DIR, "processed_data", "curated_users.jsonl")
 
-def load_users(users_path):
+def load_users(users_path, start_age = 12, end_age = 20):
     """Load users between ages 12 and 20."""
     valid_users = {}
 
@@ -25,7 +25,7 @@ def load_users(users_path):
             except ValueError:
                 continue
 
-            if 12 <= age <= 20:
+            if start_age <= age <= end_age:
                 user_id = int(row["User-ID"])
                 valid_users[user_id] = {
                     "user_id": user_id,
@@ -55,7 +55,7 @@ def write_jsonl(output_path, users_dict):
             f.write(json.dumps(user) + "\n")
 
 def main():
-    valid_users = load_users(USERS_PATH)
+    valid_users = load_users(USERS_PATH, end_age=25)
     print(len(valid_users))
     attach_ratings(RATINGS_PATH, valid_users)
     write_jsonl(OUTPUT_PATH, valid_users)
