@@ -25,20 +25,26 @@ with open(VECTOR_PATH, 'r') as f:
         item = json.loads(line)
         
         # Get STEM values
-        stem_vals = item.get('empath', {})
+        # stem_vals = item.get('empath', {})
+        tfidf_list = item.get('tf_idf', [])
+        tfidf_vals = {f"tfidf_{i}": val for i, val in enumerate(tfidf_list)}
         
         # Reduce Emotions
-        reduced_emotions = reduce_emotion_vector(item.get('emotion', {}))
+        #reduced_emotions = reduce_emotion_vector(item.get('emotion', {}))
+        emotions = item.get('emotion_intensity', [])
         
         # Merge into a single flat dictionary for the row
-        row = {**stem_vals, **reduced_emotions}
+        #row = {**stem_vals, **reduced_emotions}
+        row = {**tfidf_vals, **emotions}
         data.append(row)
 
 df = pd.DataFrame(data)
 
 # 2. Define our column groups
-stem_cols = ['science', 'technology', 'engineering', 'mathematics']
-emotion_cols = ['Joy_Sadness', 'Trust_Disgust', 'Fear_Anger', 'Surprise_Anticipation']
+# stem_cols = ['science', 'technology', 'engineering', 'mathematics']
+stem_cols = [f"tfidf_{i}" for i in range(40)]
+# emotion_cols = ['Joy_Sadness', 'Trust_Disgust', 'Fear_Anger', 'Surprise_Anticipation']
+emotion_cols = ['Anger', 'Anticipation', 'Disgust', 'Fear', 'Joy', 'Sadness', 'Surprise', 'Trust']
 
 # 3. Calculate Correlation Matrix
 # We only want the correlation BETWEEN these two groups, not within them
