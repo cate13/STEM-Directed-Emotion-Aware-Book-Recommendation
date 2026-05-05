@@ -10,7 +10,7 @@ import numpy as np
 
 # ---- Paths ----
 
-TEST_DATA_FILE = "user_eval_sets/users_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json"
+TEST_DATA_FILE = "user_eval_sets/users_1_plus_STEM_books_and_6_plus_high_rated_split_60_40.json"
 #TEST_DATA_FILE = "user_eval_sets/test.json"
 STEM_BOOKS_FILE = "processed_data/stem_isbns_from_topic.txt"
 
@@ -144,6 +144,8 @@ def run_all_recommendations(test_data_file):
             )
 
 
-recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
+#recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
 
 #test_weights(topic_type="sentance_bert")
+
+run_all_recommendations(test_data_file=TEST_DATA_FILE)
