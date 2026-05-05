@@ -18,7 +18,7 @@ def general_stem_topic_vec_maker(topic_type):
     stem_vecs = []
     print("Retrieving STEM vectors")
     for isbn in tqdm(stem_isbns):
-        print(isbn)
+        #print(isbn)
         temp = get_vector_by_isbn(isbn, topic_type)
         if temp:
             stem_vecs.append(temp)
@@ -43,7 +43,8 @@ def find_more_stem(avg_stem_vector, topic_type, threshold=0.75):
     candidate_books.sort(key=lambda x: x[1], reverse=True)
     with open("processed_data/stem_isbns_from_cossine_new.txt", "w", encoding="utf-8") as f:
         for book in candidate_books:
-            f.write(json.dumps(book) + "\n")
+            # Change this line:
+            f.write(book + "\n")
 
     return candidate_books
 
@@ -51,7 +52,8 @@ def find_more_stem(avg_stem_vector, topic_type, threshold=0.75):
 if __name__ == "__main__":
     print("Generating STEM topic vector using empath: ")
     avg_stem_vector, stem_isbns = general_stem_topic_vec_maker("empath")
+    print(avg_stem_vector)
 
     print("Searching for more STEM books . . .")
-    # possible_books = find_more_stem(avg_stem_vector, "empath")
-    # possible_books.sort(key=lambda x: x[1], reverse=True)
+    possible_books = find_more_stem(avg_stem_vector, "empath")
+    possible_books.sort(key=lambda x: x[1], reverse=True)
