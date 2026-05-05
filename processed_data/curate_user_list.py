@@ -6,8 +6,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USERS_PATH = os.path.join(BASE_DIR, "starting_data", "Users.csv")
 RATINGS_PATH = os.path.join(BASE_DIR, "starting_data", "Ratings.csv")
-BOOKS_JSONL_PATH = os.path.join(BASE_DIR, "processed_data", "books_with_subjects.jsonl") 
-OUTPUT_PATH = os.path.join(BASE_DIR, "processed_data", "curated_users.jsonl")
+BOOKS_JSONL_PATH = os.path.join(BASE_DIR, "processed_data", "book_vectors_base.jsonl") 
+OUTPUT_PATH = os.path.join(BASE_DIR, "processed_data", "curated_users_12-25.jsonl")
 
 def load_valid_isbns(books_path):
     """Create a set of ISBNs that exist in the books JSONL."""
@@ -20,12 +20,12 @@ def load_valid_isbns(books_path):
         for line in f:
             try:
                 book_data = json.loads(line)
-                valid_isbns.add(book_data["ISBN"])
+                valid_isbns.add(book_data["isbn"])
             except (json.JSONDecodeError, KeyError):
                 continue
     return valid_isbns
 
-def load_users(users_path):
+def load_users(users_path, start_age = 12, end_age = 20):
     """Load users between ages 12 and 20."""
     valid_users = {}
     with open(users_path, newline="", encoding="utf-8") as f:
@@ -37,7 +37,7 @@ def load_users(users_path):
                 age = float(age)
             except ValueError: continue
             
-            if 12 <= age <= 20:
+            if start_age <= age <= end_age:
                 u_id = int(row["User-ID"])
                 valid_users[u_id] = {"user_id": u_id, "age": age, "book_list": []}
     return valid_users
@@ -74,7 +74,7 @@ def main():
     print(f"Valid books: {len(valid_isbns)}")
     
     print("Loading users...")
-    valid_users = load_users(USERS_PATH)
+    valid_users = load_users(USERS_PATH, end_age=25)
     print(f"valid users: {len(valid_users)}")
     
     print("Processing ratings...")
