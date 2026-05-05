@@ -6,7 +6,6 @@ from Recomender_Helper.vector_helper import get_vector_by_isbn
 # Update this path to match your actual file location
 CURATED_USERS_PATH = "processed_data/curated_users_12-25.jsonl"
 
-
 def extract_unique_isbns_from_currated_users(file_path):
     unique_isbns = set()
     

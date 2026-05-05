@@ -27,49 +27,30 @@ def _load_book_data(file_path):
         print(f"Warning: {file_path} not found.")
     return book_map
 
-def _load_base_word_data(file_path='processed_data/vocab_using_w2v_vectors.jsonl'):
-    word_map = {}
-    print("loading base word data")
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            record = json.loads(line)
-            word = record.get("word")
-            if word:
-                # Store the whole record (or just the vectors) keyed by ISBN
-                word_map[word] = record
-    return word_map
-
-def _load_conditioned_word_data(file_path='processed_data/vocab_w2v_combined_vectors.jsonl'):
-    word_map = {}
-    print("loading comditioned_word_data")
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            record = json.loads(line)
-            word = record.get("word")
-            if word:
-                # Store the whole record (or just the vectors) keyed by ISBN
-                word_map[word] = record
-    return word_map
 
 # Global constant loaded when the script starts
 BASE_BOOK_DATA_CACHE = _load_book_data(BOOK_VECTORS_BASE)
 
-
 def get_vector_by_isbn(isbn: str, vector_type: str):
-
     valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf"}
 
     if vector_type not in valid_types:
-        raise ValueError(f"vector_type must be one of {valid_types}")
+        raise ValueError(f"Invalid vector_type. Must be one of {valid_types}")
 
+    # 1. Get the record for the specific ISBN
     record = BASE_BOOK_DATA_CACHE.get(isbn)
-    if record:
-        return BASE_BOOK_DATA_CACHE.get(vector_type)
-    else:
-        raise Exception(f"Missing vector type {vector_type} for isbn: {isbn}")
+    
+    if not record:
+        # Better to return None or raise a specific KeyError if ISBN isn't found
+        raise KeyError(f"ISBN {isbn} not found in database.")
 
+    # 2. Get the specific vector from that record
+    vector = record.get(vector_type)
+    
+    if vector is None:
+        raise ValueError(f"Vector type '{vector_type}' missing for ISBN: {isbn}")
+
+    return vector
 
 def graphTF_IDF(results, title):
     plt.figure()
@@ -115,7 +96,6 @@ def concat_with_weight(e_vec, t_vec, e_weight, t_weight):
     
     return weighted_e + weighted_t
 
-
 def cosine_similarity(vec1, vec2):
     if type(vec1) is not type(vec2):
         raise ValueError("Both vectors must be the same type.")
@@ -148,7 +128,6 @@ def cosine_similarity(vec1, vec2):
         return 0.0
 
     return float(np.dot(v1, v2) / (norm1 * norm2))
-
 
 def average_vectors(vectors: List[Union[List[float], dict]]):
     """
@@ -195,9 +174,7 @@ if __name__ == "__main__":
     isbn_3 = "0425176428"
     isbn_list = [isbn_1, isbn_2, isbn_3]
     for i in isbn_list:
-        temp_t = get_vector_by_isbn(i, "sentance_bert")
         temp_e = get_vector_by_isbn(i, "emotion")
-        print(f"isbn: {i}, {temp_e}, {temp_t}")
-        concat_list = concat(temp_t, temp_e)
-        print(concat_list)
+        print(temp_e)
+        
 
