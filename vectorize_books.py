@@ -82,9 +82,19 @@ def updated_vectorizer():
 
 
 def redo_vectorizer():
-    JSONL_PATH = "processed_data/books_with_subjects.jsonl"
-    book_descriptions = get_descriptions(JSONL_PATH)
+    younger_books = "processed_data/books_with_subjects_read_by_younger_readers.jsonl"
+    older_books = "processed_data/books_with_subjects_read_by_older_readers.jsonl"
+    young_book_descriptions = get_descriptions(younger_books)
+    print(young_book_descriptions[0])
+    print(f"Loaded {len(young_book_descriptions)} books from by younger readers, used to create TF_IDF maker")
+    old_book_descriptions = get_descriptions(older_books)
+    print(old_book_descriptions[0])
+    print(f"Loaded {len(old_book_descriptions)} books from by older readers")
     print("Loaded Book Descriptions")
+
+    prev_descriptions = [text for _, text in young_book_descriptions]
+
+    tf_idf_vec_maker = TF_IDFVectorMaker(prev_descriptions)
 
     emo_intensity_vec_maker = EmotionVectorMaker()
 
@@ -92,20 +102,16 @@ def redo_vectorizer():
 
     empath_vec_maker = EmpathVectorMaker()
 
-    all_descriptions = [text for _, text in book_descriptions]
-
-    tf_idf_vec_maker = TF_IDFVectorMaker(all_descriptions)
-
     print("++++++++++ALL VECTOR MAKERS MADE++++++++++")
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(
-        BASE_DIR, "processed_data", "book_vectors_base.jsonl"
+        BASE_DIR, "processed_data", "book_vectors_older_readers.jsonl"
     )
 
     with open(output_path, "w", encoding="utf-8") as outfile:
         i = 0
-        for isbn, description in tqdm(book_descriptions):
+        for isbn, description in tqdm(old_book_descriptions):
             emo_intensity_vec = emo_intensity_vec_maker.getEmotionVector(description, removeObj=True)
             emo_vec = emo_vec_maker.getEmotionVector(description, removeObj=True)
             empath_vec = empath_vec_maker.getEmapthVector(description)
