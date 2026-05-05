@@ -358,4 +358,4 @@ def get_4_plus_user_list():
         
     print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
 
-get_60_40_split(highly_rated_book_count=10)
+get_60_40_split(highly_rated_book_count=6)
