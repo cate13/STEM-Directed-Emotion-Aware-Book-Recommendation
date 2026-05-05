@@ -117,7 +117,11 @@ def cosine_similarity(vec1, vec2):
         keys = sorted(vec1.keys())
         v1 = np.array([vec1[k] for k in keys], dtype=float)
         v2 = np.array([vec2[k] for k in keys], dtype=float)
-
+    elif isinstance(vec1, np.ndarray):
+        if vec1.shape != vec2.shape:
+            raise ValueError("Both numpy vectors must have the same shape.")
+        v1 = vec1
+        v2 = vec2
     else:
         raise TypeError(f"Unsupported vector type. {vec1} {vec2}")
 
@@ -152,7 +156,12 @@ def average_vectors(vectors: List[Union[List[float], dict]]):
     if isinstance(first, list):
         return np.mean(np.array(vectors), axis=0).tolist()
 
-    # Case 2: Dict-based vector (emotion/empath)
+    # Case 2: NumPy-based vector
+    elif isinstance(first, np.ndarray):
+        # We average along the rows (axis 0)
+        return np.mean(np.array(vectors), axis=0)
+    
+    # Case 3: Dict-based vector (emotion/empath)
     elif isinstance(first, dict):
         keys = first.keys()
 

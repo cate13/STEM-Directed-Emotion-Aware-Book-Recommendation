@@ -105,14 +105,14 @@ def format_matching_users(matching_users, target_isbns):
             if is_in_target:
                 book_copy['is_stem'] = True
                 others.append(book_copy)
-            elif book_copy.get('rating', 0) > 7:
+            elif book_copy.get('rating', 0) >= 7:
                 candidate_eligible.append(book_copy)
             else:
                 others.append(book_copy)
 
         # 2. Split the candidate_eligible books into two halves
         random.shuffle(candidate_eligible)
-        split_point = int(len(candidate_eligible) * 0.6)
+        split_point = math.ceil(len(candidate_eligible) * 0.6)
         
         candidate_profile = candidate_eligible[:split_point]
         
@@ -358,4 +358,4 @@ def get_4_plus_user_list():
         
     print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
 
-get_60_40_split(highly_rated_book_count=6)
+get_60_40_split(highly_rated_book_count=10)
