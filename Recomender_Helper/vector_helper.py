@@ -7,16 +7,8 @@ import tqdm
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# BOOK_VECTORS = os.path.join(
-#     BASE_DIR, "processed_data", "book_vectors.jsonl"
-# )
-
 BOOK_VECTORS_BASE = os.path.join(
-    BASE_DIR, "processed_data", "book_vectors_base_missing.jsonl"
-)
-
-BOOK_VECTORS_EXTENDED = os.path.join(
-    BASE_DIR, "processed_data", "book_vectors_extended.jsonl"
+    BASE_DIR, "processed_data", "book_vectors_base.jsonl"
 )
 
 def _load_book_data(file_path):
@@ -63,43 +55,21 @@ def _load_conditioned_word_data(file_path='processed_data/vocab_w2v_combined_vec
 
 # Global constant loaded when the script starts
 BASE_BOOK_DATA_CACHE = _load_book_data(BOOK_VECTORS_BASE)
-EXTENDED_BOOK_DATA_CACHE = _load_book_data(BOOK_VECTORS_EXTENDED)
-# W2V_WORD_DATA_CACHE = _load_base_word_data()
-# W2V_CONDITIONED_DATA_CACHE = _load_conditioned_word_data()
 
-# def get_vector_by_word(word, vector_type):
-#     valid_types = {'w2v_emotion_conditioned_topic_vec', 'emotion_vec', 'w2v_topic_vec'}
-
-#     if vector_type not in valid_types:
-#         raise ValueError(f"vector_type must be one of {valid_types}")
-    
-#     if vector_type == 'w2v_emotion_conditioned_topic_vec':
-#         record = W2V_CONDITIONED_DATA_CACHE.get(word)
-#     else:
-#         record = W2V_WORD_DATA_CACHE.get(word)
-    
-#     if record:
-#         return record.get(vector_type)
-
-#     return None
 
 def get_vector_by_isbn(isbn: str, vector_type: str):
 
-    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf", "empath_7D", "sentance_bert"}
+    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf"}
 
     if vector_type not in valid_types:
         raise ValueError(f"vector_type must be one of {valid_types}")
 
-    if vector_type == "empath_7D" or vector_type == "sentance_bert":
-        record = EXTENDED_BOOK_DATA_CACHE.get(isbn)
-    else:
-        record = BASE_BOOK_DATA_CACHE.get(isbn)
+    record = BASE_BOOK_DATA_CACHE.get(isbn)
     if record:
-        return record.get(vector_type)
+        return BASE_BOOK_DATA_CACHE.get(vector_type)
     else:
         raise Exception(f"Missing vector type {vector_type} for isbn: {isbn}")
 
-    return None
 
 def graphTF_IDF(results, title):
     plt.figure()
@@ -169,7 +139,7 @@ def cosine_similarity(vec1, vec2):
         v2 = np.array([vec2[k] for k in keys], dtype=float)
 
     else:
-        raise TypeError("Unsupported vector type.")
+        raise TypeError(f"Unsupported vector type. {vec1} {vec2}")
 
     norm1 = np.linalg.norm(v1)
     norm2 = np.linalg.norm(v2)
@@ -217,7 +187,7 @@ def average_vectors(vectors: List[Union[List[float], dict]]):
         }
 
     else:
-        raise TypeError("Unsupported vector type.")
+        raise TypeError(f"Unsupported vector type. {vectors}")
 
 if __name__ == "__main__":
     isbn_1 = "0195153448"
