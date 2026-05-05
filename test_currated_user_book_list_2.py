@@ -30,6 +30,9 @@ def extract_unique_isbns_from_currated_users(file_path):
 
 # Usage
 all_isbns_from_curated_users = extract_unique_isbns_from_currated_users(CURATED_USERS_PATH)
+print(len(all_isbns_from_curated_users))
+
+missing_isbn = 0
 
 for isbn in tqdm(all_isbns_from_curated_users):
     try:
@@ -37,6 +40,13 @@ for isbn in tqdm(all_isbns_from_curated_users):
         nrc = get_vector_by_isbn(isbn, "emotion")
         empath = get_vector_by_isbn(isbn, "empath")
         tf_idf = get_vector_by_isbn(isbn, "tf_idf")
+
+        if any(v is None for v in [emo_lex, nrc, empath, tf_idf]):
+            #print(f"Skipping ISBN {isbn}: One or more vectors are missing.")
+            missing_isbn += 1
+            continue
     except Exception as e:
         print(e)
         print(isbn)
+
+print(f"Missing {missing_isbn} isbns")

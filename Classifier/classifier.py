@@ -313,14 +313,14 @@ def save_stem_isbns(results):
 
 X, y = just_x_y()
 
-print(compare_to_multinomial(X, y))
+# print(compare_to_multinomial(X, y))
 
-# X_train, X_test, y_train, y_test = data_set_up()
+X_train, X_test, y_train, y_test = data_set_up()
 
 # all_model_accuracy(X_train, X_test, y_train, y_test)
 
-# model, scaler = try_MultinomialNB_with_MINMAX(X_train, X_test, y_train, y_test)
+model, scaler = try_MultinomialNB_with_MINMAX(X_train, X_test, y_train, y_test)
 
-# new_results = classify_new_books(model, scaler)
+new_results = classify_new_books(model, scaler)
 
-# save_stem_isbns(new_results)
+save_stem_isbns(new_results)

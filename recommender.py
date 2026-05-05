@@ -148,4 +148,6 @@ def run_all_recommendations(test_data_file):
 
 #test_weights(topic_type="sentance_bert")
 
-run_all_recommendations(test_data_file=TEST_DATA_FILE)
+#run_all_recommendations(test_data_file=TEST_DATA_FILE)
+
+recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", use_matrix_combo=True)
