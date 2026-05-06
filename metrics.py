@@ -8,6 +8,7 @@ from sklearn.metrics import ndcg_score
 import scipy.stats as stats
 from scipy.stats import wilcoxon
 import re
+from tqdm import tqdm 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -190,6 +191,17 @@ def calculate_metrics(file_path, is_llm = False):
         "NDCG_10" : ndcg_10,
     }
     
+def get_file_names(target_folder):
+    files = [f for f in os.listdir(target_folder) if os.path.isfile(os.path.join(target_folder, f))]
+    all_files = [f for f in os.listdir(target_folder) if f.endswith('.json')]
+    for filename in all_files:
+        print(filename)
+
+def file_name_to_column_entry(file_name):
+    name = file_name.replace('.json', '')
+    name = name.replace('tf_idf', 'TF-IDF')
+    name = name.replace('_', ' ')
+    return name.capitalize()
 
 def aggregate_metrics_to_csv(target_folder, output_filename="results.csv"):
     # 1. Gather all files (filtering for .txt or .json as needed)
@@ -204,7 +216,7 @@ def aggregate_metrics_to_csv(target_folder, output_filename="results.csv"):
     all_rows = []
     
     # 2. Process each file
-    for filename in all_files:
+    for filename in tqdm(all_files):
         file_path = os.path.join(target_folder, filename)
         
         try:
@@ -213,7 +225,7 @@ def aggregate_metrics_to_csv(target_folder, output_filename="results.csv"):
             
             # Insert the filename at the start of the dictionary
             # This ensures the row label is included
-            row = {"File Name": filename}
+            row = {"Model": file_name_to_column_entry(file_name=filename)}
             row.update(metrics)
             all_rows.append(row)
         except Exception as e:
@@ -514,10 +526,10 @@ def compare_baseline_to_others_llm():
 
 
 
-print(calculate_metrics("recommendations/1_plus_stem_books_weight/emotion_with_weight_0.001__empath_with_weight_1.0.json", is_llm=False))
+# print(calculate_metrics("recommendations/1_plus_stem_books_weight/emotion_with_weight_0.001__empath_with_weight_1.0.json", is_llm=False))
 
 # compare_baseline_to_others_llm()
 
 #compare_baseline_to_others(target_folder="recommendations/1_plus_stem_books", baseline_filename="recommendation_using_emotion_intensity_sentance_bert.json", output_filename="Wilcoxon_compared_to_emotion_intensity_s_bert.csv")
 
-# aggregate_metrics_to_csv(target_folder="recommendations/1_plus_stem_books_weight/emotion_empath")
+aggregate_metrics_to_csv(target_folder="recommendations/12-25")
