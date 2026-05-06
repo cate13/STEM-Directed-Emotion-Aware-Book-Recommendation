@@ -87,11 +87,11 @@ def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "
             print(item['user_id'])
     
     if use_matrix_combo & reduce:
-        output_file_name = f"recommendations/12-25/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     elif use_matrix_combo:
-        output_file_name = f"recommendations/12-25/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     else:
-        output_file_name = f"recommendations/12-25/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
     with open(output_file_name, 'w') as f:
         json.dump(data, f, indent=4)
 
