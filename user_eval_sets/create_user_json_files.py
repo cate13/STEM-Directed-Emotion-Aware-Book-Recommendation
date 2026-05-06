@@ -6,7 +6,7 @@ import random
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CURATED_USERS_PATH = os.path.join(
-    BASE_DIR, "processed_data", "curated_users_12-25.jsonl"
+    BASE_DIR, "processed_data", "curated_users_20-25.jsonl"
 )
 
 STEM_BOOKS_PATH_1 = os.path.join(
@@ -310,7 +310,7 @@ def get_60_40_split(highly_rated_book_count = 6):
     formatted_users = format_matching_users(user_with_x, stem_isbns)
 
     out_file_path = os.path.join(
-        BASE_DIR, "user_eval_sets", f"users_1_plus_STEM_books_and_{highly_rated_book_count}_plus_high_rated_split_60_40.json"
+        BASE_DIR, "user_eval_sets", f"users_20_25_1_plus_STEM_books_and_{highly_rated_book_count}_plus_high_rated_split_60_40.json"
     )
 
     with open(out_file_path, 'w', encoding='utf-8') as f:

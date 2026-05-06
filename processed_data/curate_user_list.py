@@ -7,7 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USERS_PATH = os.path.join(BASE_DIR, "starting_data", "Users.csv")
 RATINGS_PATH = os.path.join(BASE_DIR, "starting_data", "Ratings.csv")
 BOOKS_JSONL_PATH = os.path.join(BASE_DIR, "processed_data", "book_vectors_base.jsonl") 
-OUTPUT_PATH = os.path.join(BASE_DIR, "processed_data", "curated_users_12-25.jsonl")
+OUTPUT_PATH = os.path.join(BASE_DIR, "processed_data", "curated_users_20-25.jsonl")
 
 def load_valid_isbns(books_path):
     """Create a set of ISBNs that exist in the books JSONL."""
@@ -74,7 +74,7 @@ def main():
     print(f"Valid books: {len(valid_isbns)}")
     
     print("Loading users...")
-    valid_users = load_users(USERS_PATH, end_age=25)
+    valid_users = load_users(USERS_PATH, start_age=20, end_age=25)
     print(f"valid users: {len(valid_users)}")
     
     print("Processing ratings...")
