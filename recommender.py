@@ -107,47 +107,49 @@ def run_all_recommendations(test_data_file):
     # Define the parameter ranges
     emotion_types = ["emotion_intensity", "emotion"]
     topic_types = ["empath", "tf_idf"]
+    matrix_options = [True, False]
     
-    # Using np.linspace or np.arange to handle the 0.1 steps
-    # We round to 1 decimal place to avoid floating point errors (e.g., 0.30000000000000004)
-    weights = [round(x, 1) for x in np.arange(0.0, 1.1, 0.1)]
-    
-    matrix_combos = [True, False]
-    
-    # Generate all combinations
-    all_combinations = itertools.product(
-        emotion_types, 
-        topic_types, 
-        weights, 
-        weights, 
-        matrix_combos
-    )
+    # Generate the 11 weight pairs (0.0/1.0, 0.1/0.9 ... 1.0/0.0)
+    weights = [(round(w, 1), round(1.0 - w, 1)) for w in np.arange(0.0, 1.1, 0.1)]
 
-    for e_type, t_type, e_weight, t_weight, m_combo in all_combinations:
-        
-        # Constraint: reduce can only be True if topic_type is "empath"
-        # Otherwise, we only run it as False
-        reduce_options = [True, False] if t_type == "empath" else [False]
-        
-        for r_val in reduce_options:
-            print(f"Running: {e_type}, {t_type}, e_w: {e_weight}, t_w: {t_weight}, m: {m_combo}, r: {r_val}")
-            
-            # Call your method
-            recommend(
-                test_data_file,
-                emotion_type=e_type,
-                topic_type=t_type,
-                emotion_weight=e_weight,
-                topic_weight=t_weight,
-                use_matrix_combo=m_combo,
-                reduce=r_val
-            )
+    all_configs = []
+
+    for e_type in emotion_types:
+        for t_type in topic_types:
+            for e_w, t_w in weights:
+                for use_matrix in matrix_options:
+                    
+                    # Logic for the 'reduce' flag
+                    reduce_options = [False]
+                    if t_type == "empath":
+                        reduce_options = [True, False]
+                    
+                    for should_reduce in reduce_options:
+                        all_configs.append({
+                            "emotion_type": e_type,
+                            "topic_type": t_type,
+                            "emotion_weight": e_w,
+                            "topic_weight": t_w,
+                            "use_matrix_combo": use_matrix,
+                            "reduce": should_reduce
+                        })
+
+    for c in all_configs:
+        recommend(
+            test_data_file, 
+            emotion_type=c["emotion_type"],
+            topic_type=c["topic_type"],
+            emotion_weight=c["emotion_weight"],
+            topic_weight=c["topic_weight"],
+            use_matrix_combo=c["use_matrix_combo"],
+            reduce=c["reduce"]
+        )
 
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
 
 #test_weights(topic_type="sentance_bert")
 
-#run_all_recommendations(test_data_file=TEST_DATA_FILE)
+run_all_recommendations(test_data_file=TEST_DATA_FILE)
 
-recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", use_matrix_combo=True)
+#recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", reduce=True)
