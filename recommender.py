@@ -10,7 +10,7 @@ import numpy as np
 
 # ---- Paths ----
 
-TEST_DATA_FILE = "user_eval_sets/users_20_25_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json"
+TEST_DATA_FILE = "user_eval_sets/users_12_25_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json"
 #TEST_DATA_FILE = "user_eval_sets/test.json"
 STEM_BOOKS_FILE = "processed_data/stem_isbns_from_topic.txt"
 
@@ -87,11 +87,11 @@ def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "
             print(item['user_id'])
     
     if use_matrix_combo & reduce:
-        output_file_name = f"recommendations/20_25_age_10_plus_high_rated_books/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     elif use_matrix_combo:
-        output_file_name = f"recommendations/20_25_age_10_plus_high_rated_books/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     else:
-        output_file_name = f"recommendations/20_25_age_10_plus_high_rated_books/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
     with open(output_file_name, 'w') as f:
         json.dump(data, f, indent=4)
 
