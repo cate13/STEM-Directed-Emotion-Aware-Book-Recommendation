@@ -145,11 +145,32 @@ def run_all_recommendations(test_data_file):
             reduce=c["reduce"]
         )
 
+def run_emotion_v_empath(test_data_file):
+    emotion_types = ["emotion_intensity", "emotion"]
+    topic_type = "empath"
+
+    emotion_weights = [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
+    topic_weights = [1.0, 1.5, 2.0, 7.5, 10.0, 20.0]
+
+    combinations = itertools.product(emotion_types, emotion_weights, topic_weights)
+
+    for e_type, e_weight, t_weight in tqdm(combinations):
+        recommend(
+            test_data_file, 
+            emotion_type=e_type,
+            topic_type=topic_type,
+            emotion_weight=e_weight,
+            topic_weight=t_weight,
+            use_matrix_combo=False,
+            reduce=False,
+        )
+
+
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
 
 #test_weights(topic_type="sentance_bert")
 
-run_all_recommendations(test_data_file=TEST_DATA_FILE)
+run_emotion_v_empath(test_data_file=TEST_DATA_FILE)
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", reduce=True)
