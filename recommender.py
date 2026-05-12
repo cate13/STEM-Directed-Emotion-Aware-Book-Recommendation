@@ -87,11 +87,11 @@ def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "
             print(item['user_id'])
     
     if use_matrix_combo & reduce:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     elif use_matrix_combo:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
     else:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_v_emotion/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
+        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
     with open(output_file_name, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -165,12 +165,20 @@ def run_emotion_v_empath(test_data_file):
             reduce=False,
         )
 
+def run_empath_7D(test_data_file):
+    emotion_types = ["emotion_intensity", "emotion"]
+    topic_types = ["empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"]
+
+    for t_type in topic_types:
+        for e_type in tqdm(emotion_types):
+            recommend(test_data_file, emotion_type=e_type, topic_type=t_type)
+            recommend(test_data_file, emotion_type=e_type, topic_type=t_type, emotion_weight=0.1, topic_weight=0.9)
 
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
 
 #test_weights(topic_type="sentance_bert")
 
-run_emotion_v_empath(test_data_file=TEST_DATA_FILE)
+run_empath_7D(test_data_file=TEST_DATA_FILE)
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", reduce=True)
