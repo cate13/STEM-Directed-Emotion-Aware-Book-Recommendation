@@ -299,4 +299,4 @@ def update_vectorizer_with_new_features():
                 outfile.write(json.dumps(book) + "\n")
 
 
-redo_vectorizer()
+vectroize_for_empath_7d_exploration()
