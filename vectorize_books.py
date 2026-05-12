@@ -6,6 +6,9 @@ from Vectorizer.Empath7DVectorMaker import Empath7DVectorMaker
 from Vectorizer.SentanceBERTVectorMaker import SBERTVectorMaker
 from Vectorizer.Empath7DVectorMaker_nytimes import Empath7D_NWTimes_VectorMaker
 from Vectorizer.Empath7DVectorMaker_reddit import Empath7DRedditVectorMaker
+from Vectorizer.Empath7DVectorMaker_gpt_word_list import Empath7D_GPT_Wordlist_VectorMaker
+from Vectorizer.Empath7DVectorMaker_gemini_word_list import Empath7D_Gemini_Wordlist_VectorMaker
+from Vectorizer.Empath7DVectorMaker_llm_word_list import Empath7D_LLM_Wordlist_VectorMaker
 import os
 from tqdm import tqdm
 
@@ -87,9 +90,10 @@ def vectroize_for_empath_7d_exploration():
     old_book_descriptions = get_descriptions(older_books)
     all_descriptions = young_book_descriptions + old_book_descriptions
 
-    empath_with_instructions = Empath7DVectorMaker()
-    empath_from_reddit = Empath7DRedditVectorMaker()
-    empath_from_nytimes = Empath7D_NWTimes_VectorMaker()
+    empath_with_base_word_list = Empath7DVectorMaker()
+    empath_shared_llm_word_lsit = Empath7D_LLM_Wordlist_VectorMaker()
+    empath_chat_gpt_word_list = Empath7D_GPT_Wordlist_VectorMaker()
+    empath_gemini_word_list = Empath7D_Gemini_Wordlist_VectorMaker()
 
     print("++++++++++ALL VECTOR MAKERS MADE++++++++++")
 
@@ -100,15 +104,17 @@ def vectroize_for_empath_7d_exploration():
 
     with open(output_path, "w", encoding="utf-8") as outfile:
         for isbn, description in tqdm(all_descriptions):
-            empath_with_seed_words = empath_with_instructions.getEmapthVector(description)
-            empath_vec_from_reddit = empath_from_reddit.getEmapthVector(description)
-            empath_vec_from_nytimes = empath_from_nytimes.getEmapthVector(description)
+            empath_vec_with_base_word_list = empath_with_base_word_list.getEmapthVector(description)
+            empath_vec_shared_llm_word_lsit = empath_shared_llm_word_lsit.getEmapthVector(description)
+            empath_vec_chat_gpt_word_list = empath_chat_gpt_word_list.getEmapthVector(description)
+            empath_vec_emini_word_list = empath_gemini_word_list.getEmapthVector(description)
 
             book = {
                 "isbn" : isbn,
-                "empath_with_seed_words" : empath_with_seed_words,
-                "empath_vec_from_reddit" : empath_vec_from_reddit,
-                "empath_vec_from_nytimes" : empath_vec_from_nytimes,
+                "empath_vec_with_base_word_list" : empath_vec_with_base_word_list,
+                "empath_vec_shared_llm_word_lsit" : empath_vec_shared_llm_word_lsit,
+                "empath_vec_chat_gpt_word_list" : empath_vec_chat_gpt_word_list,
+                "empath_vec_emini_word_list" : empath_vec_emini_word_list
             }
             outfile.write(json.dumps(book) + "\n")
 
