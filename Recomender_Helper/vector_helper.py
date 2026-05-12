@@ -11,6 +11,10 @@ BOOK_VECTORS_BASE = os.path.join(
     BASE_DIR, "processed_data", "book_vectors_base.jsonl"
 )
 
+BOOK_VECTORS_7D = os.path.join(
+    BASE_DIR, "processed_data", "book_vectors_for_empath_7D.jsonl"
+)
+
 def _load_book_data(file_path):
     book_map = {}
     print("loading vec data")
@@ -30,15 +34,16 @@ def _load_book_data(file_path):
 
 # Global constant loaded when the script starts
 BASE_BOOK_DATA_CACHE = _load_book_data(BOOK_VECTORS_BASE)
+EMPATH_7D_DATA_CACHE = _load_book_data(BOOK_VECTORS_7D)
 
 def get_vector_by_isbn(isbn: str, vector_type: str):
-    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf"}
+    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf", "empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"}
 
-    if vector_type not in valid_types:
-        raise ValueError(f"Invalid vector_type. Must be one of {valid_types}")
-
-    # 1. Get the record for the specific ISBN
-    record = BASE_BOOK_DATA_CACHE.get(isbn)
+    if vector_type in {"emotion_intensity", "emotion", "empath", "tf_idf"}:
+        record = BASE_BOOK_DATA_CACHE.get(isbn)
+    elif vector_type in {"empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"}:
+        record = EMPATH_7D_DATA_CACHE.get(isbn)
+    else: raise ValueError(f"Invalid vector_type. Must be one of {valid_types}")
     
     if not record:
         # Better to return None or raise a specific KeyError if ISBN isn't found
@@ -183,7 +188,7 @@ if __name__ == "__main__":
     isbn_3 = "0425176428"
     isbn_list = [isbn_1, isbn_2, isbn_3]
     for i in isbn_list:
-        temp_e = get_vector_by_isbn(i, "emotion")
+        temp_e = get_vector_by_isbn(i, "empath_vec_from_reddit")
         print(temp_e)
         
 
