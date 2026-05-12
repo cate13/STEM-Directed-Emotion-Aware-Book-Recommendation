@@ -3,9 +3,9 @@ from Vectorizer.EmotionVectorMaker import EmotionVectorMaker
 from Vectorizer.EmpathVectorMaker import EmpathVectorMaker
 from Vectorizer.TF_IDFVectorMaker import TF_IDFVectorMaker
 from Vectorizer.Empath7DVectorMaker import Empath7DVectorMaker
-from Vectorizer.TF_IDF_long_VectorMaker import TF_IDF_long_VectorMaker
 from Vectorizer.SentanceBERTVectorMaker import SBERTVectorMaker
-from Vectorizer.SentanceBERTshortVectorMaker import SBERTshortVectorMaker
+from Vectorizer.Empath7DVectorMaker_nytimes import Empath7D_NWTimes_VectorMaker
+from Vectorizer.Empath7DVectorMaker_reddit import Empath7DRedditVectorMaker
 import os
 from tqdm import tqdm
 
@@ -76,6 +76,39 @@ def updated_vectorizer():
                 "isbn" : isbn,
                 "empath_7D" : e7,
                 "sentance_bert" : sbert.tolist()
+            }
+            outfile.write(json.dumps(book) + "\n")
+
+
+def vectroize_for_empath_7d_exploration():
+    younger_books = "processed_data/books_with_subjects_read_by_younger_readers.jsonl"
+    older_books = "processed_data/books_with_subjects_read_by_older_readers.jsonl"
+    young_book_descriptions = get_descriptions(younger_books)
+    old_book_descriptions = get_descriptions(older_books)
+    all_descriptions = young_book_descriptions + old_book_descriptions
+
+    empath_with_instructions = Empath7DVectorMaker()
+    empath_from_reddit = Empath7DRedditVectorMaker()
+    empath_from_nytimes = Empath7D_NWTimes_VectorMaker()
+
+    print("++++++++++ALL VECTOR MAKERS MADE++++++++++")
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    output_path = os.path.join(
+        BASE_DIR, "processed_data", "book_vectors_for_empath_7D.jsonl"
+    )
+
+    with open(output_path, "w", encoding="utf-8") as outfile:
+        for isbn, description in tqdm(all_descriptions):
+            empath_with_seed_words = empath_with_instructions.getEmapthVector(description)
+            empath_vec_from_reddit = empath_from_reddit.getEmapthVector(description)
+            empath_vec_from_nytimes = empath_from_nytimes.getEmapthVector(description)
+
+            book = {
+                "isbn" : isbn,
+                "empath_with_seed_words" : empath_with_seed_words,
+                "empath_vec_from_reddit" : empath_vec_from_reddit,
+                "empath_vec_from_nytimes" : empath_vec_from_nytimes,
             }
             outfile.write(json.dumps(book) + "\n")
 
