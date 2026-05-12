@@ -167,7 +167,7 @@ def run_emotion_v_empath(test_data_file):
 
 def run_empath_7D(test_data_file):
     emotion_types = ["emotion_intensity", "emotion"]
-    topic_types = ["empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"]
+    topic_types = ["empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
 
     for t_type in topic_types:
         for e_type in tqdm(emotion_types):

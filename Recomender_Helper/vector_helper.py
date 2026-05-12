@@ -37,11 +37,11 @@ BASE_BOOK_DATA_CACHE = _load_book_data(BOOK_VECTORS_BASE)
 EMPATH_7D_DATA_CACHE = _load_book_data(BOOK_VECTORS_7D)
 
 def get_vector_by_isbn(isbn: str, vector_type: str):
-    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf", "empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"}
+    valid_types = {"emotion_intensity", "emotion", "empath", "tf_idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"}
 
     if vector_type in {"emotion_intensity", "emotion", "empath", "tf_idf"}:
         record = BASE_BOOK_DATA_CACHE.get(isbn)
-    elif vector_type in {"empath_with_seed_words", "empath_vec_from_reddit", "empath_vec_from_nytimes"}:
+    elif vector_type in {"empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"}:
         record = EMPATH_7D_DATA_CACHE.get(isbn)
     else: raise ValueError(f"Invalid vector_type. Must be one of {valid_types}")
     
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     isbn_3 = "0425176428"
     isbn_list = [isbn_1, isbn_2, isbn_3]
     for i in isbn_list:
-        temp_e = get_vector_by_isbn(i, "empath_vec_from_reddit")
+        temp_e = get_vector_by_isbn(i, "empath_vec_gemini_word_list")
         print(temp_e)
         
 

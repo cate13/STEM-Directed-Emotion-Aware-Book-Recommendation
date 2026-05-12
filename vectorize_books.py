@@ -83,7 +83,7 @@ def updated_vectorizer():
             outfile.write(json.dumps(book) + "\n")
 
 
-def vectroize_for_empath_7d_exploration():
+def vectorize_for_empath_7d_exploration():
     younger_books = "processed_data/books_with_subjects_read_by_younger_readers.jsonl"
     older_books = "processed_data/books_with_subjects_read_by_older_readers.jsonl"
     young_book_descriptions = get_descriptions(younger_books)
@@ -305,4 +305,4 @@ def update_vectorizer_with_new_features():
                 outfile.write(json.dumps(book) + "\n")
 
 
-vectroize_for_empath_7d_exploration()
+vectorize_for_empath_7d_exploration()
