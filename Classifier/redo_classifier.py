@@ -20,6 +20,7 @@ from lightgbm import LGBMClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import PassiveAggressiveClassifier
+import joblib
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NON_STEM_PATH = os.path.join(BASE_DIR, "data_exploring", "isbn_files", "750_non_stem_books_read_by_youth_with_descriptions.txt")
@@ -182,37 +183,67 @@ def test_all_models_write_to_csv(X_train, X_test, y_train, y_test):
     
     return results
 
-vector_options = [
-    "empath", 
-    "sentence_bert", 
-    "tf_idf", 
-    "empath_vec_with_base_word_list", 
-    "empath_vec_shared_llm_word_lsit"
-]
+def run_all():
+    vector_options = [
+        "empath", 
+        "sentence_bert", 
+        "tf_idf", 
+        "empath_vec_with_base_word_list", 
+        "empath_vec_shared_llm_word_lsit"
+    ]
 
-all_results = []
+    all_results = []
 
-# Generate all possible combinations (from 1 to 5 elements)
-for r in range(1, len(vector_options) + 1):
-    for combo in itertools.combinations(vector_options, r):
-        combo_list = list(combo)
-        print(f"Running for: {combo_list}")
-        
-        # Load and split data
-        X_train, X_test, y_train, y_test = data_set_up(combo_list)
-        
-        # Run models
-        scores = test_all_models_write_to_csv(X_train, X_test, y_train, y_test)
-        
-        # Add metadata for the row
-        scores['vector_types'] = ", ".join(combo_list)
-        all_results.append(scores)
+    # Generate all possible combinations (from 1 to 5 elements)
+    for r in range(1, len(vector_options) + 1):
+        for combo in itertools.combinations(vector_options, r):
+            combo_list = list(combo)
+            print(f"Running for: {combo_list}")
+            
+            # Load and split data
+            X_train, X_test, y_train, y_test = data_set_up(combo_list)
+            
+            # Run models
+            scores = test_all_models_write_to_csv(X_train, X_test, y_train, y_test)
+            
+            # Add metadata for the row
+            scores['vector_types'] = ", ".join(combo_list)
+            all_results.append(scores)
 
-# Convert to DataFrame and reorder columns so 'vector_types' is first
-df = pd.DataFrame(all_results)
-cols = ['vector_types'] + [c for c in df.columns if c != 'vector_types']
-df = df[cols]
+    # Convert to DataFrame and reorder columns so 'vector_types' is first
+    df = pd.DataFrame(all_results)
+    cols = ['vector_types'] + [c for c in df.columns if c != 'vector_types']
+    df = df[cols]
 
-# Save to CSV
-df.to_csv(VECTOR_SCORES, index=False)
-print("Done! Results saved to model_results.csv")
+    # Save to CSV
+    df.to_csv(VECTOR_SCORES, index=False)
+    print("Done! Results saved to model_results.csv")
+
+def save_model():
+    best_vectors = ["empath", "sentence_bert", "tf_idf", "empath_vec_with_base_word_list"]
+    X_train, X_test, y_train, y_test = data_set_up(best_vectors)
+
+    best_rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    best_rf_model.fit(X_train, y_train)
+
+    # 3. Save the model to a file
+    model_filename = "Classifier/best_rf_model.joblib"
+    joblib.dump(best_rf_model, model_filename)
+
+    print(f"Model saved successfully as {model_filename}")
+
+save_model()
+
+def test_model_usage():
+    loaded_rf = joblib.load("Classifier/best_rf_model.joblib")
+    best_vectors = ["empath", "sentence_bert", "tf_idf", "empath_vec_with_base_word_list"]
+    X_train, X_test, y_train, y_test = data_set_up(best_vectors)
+    predictions = loaded_rf.predict(X_test)
+    print(predictions)
+    
+    # if isbn in non_stem:
+    #     label = 0
+    # elif isbn in stem:
+    #     label = 1
+
+test_model_usage()
