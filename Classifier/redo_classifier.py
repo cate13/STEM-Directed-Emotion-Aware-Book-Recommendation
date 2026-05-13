@@ -2,6 +2,7 @@ import json
 import numpy as np
 import pandas as pd
 import os
+import itertools
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
@@ -24,7 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NON_STEM_PATH = os.path.join(BASE_DIR, "data_exploring", "isbn_files", "750_non_stem_books_read_by_youth_with_descriptions.txt")
 STEM_PATH = os.path.join(BASE_DIR, "data_exploring", "isbn_files", "stem_books_read_by_youth.txt")
 # VECTOR_FILE_PATH = os.path.join(BASE_DIR, "Classifier", "empath_7d_tf_idf_long_vectors.jsonl")
-VECTOR_FILE_PATH = os.path.join(BASE_DIR, "Classifier", "book_vectors_trainging_classifier.jsonl")
+VECTOR_FILE_PATH = os.path.join(BASE_DIR, "Classifier", "book_vectors_trainging_classifier_include_sbert.jsonl")
+VECTOR_SCORES = os.path.join(BASE_DIR, "Classifier", "model_results.csv")
+
+
 
 def load_isbns(file_path):
     with open(file_path, 'r') as f:
@@ -59,7 +63,7 @@ def data_set_up(vector_types=["empath"]):
 
             vec = []
             for vec_type in vector_types:
-                if vec_type == "tf_idf":
+                if vec_type == "tf_idf" or vec_type == "sentence_bert":
                     vec += item[vec_type]
                 else:
                     vec += [item[vec_type][k] for k in sorted(item[vec_type].keys())]
@@ -141,6 +145,74 @@ def test_all_models(X_train, X_test, y_train, y_test):
     pac.fit(X_train_scaled, y_train)
     print(f"Passive Aggressive Accuracy: {pac.score(X_test_scaled, y_test):.4f}")
 
-# 
-X_train, X_test, y_train, y_test = data_set_up(["tf_idf", "empath_vec_shared_llm_word_lsit"])
-test_all_models(X_train, X_test, y_train, y_test)
+
+def test_all_models_write_to_csv(X_train, X_test, y_train, y_test):
+    """Returns a dictionary of scores instead of printing them."""
+    results = {}
+    
+    # Pre-scaling
+    minmax_scaler = MinMaxScaler()
+    X_train_nonneg = minmax_scaler.fit_transform(X_train)
+    X_test_nonneg = minmax_scaler.transform(X_test)
+
+    std_scaler = StandardScaler()
+    X_train_scaled = std_scaler.fit_transform(X_train)
+    X_test_scaled = std_scaler.transform(X_test)
+
+    # Dictionary of models and which version of X to use
+    # Format: { "Column Name": (ModelObject, X_train_to_use, X_test_to_use) }
+    models = {
+        "RandomForest": (RandomForestClassifier(n_estimators=100, random_state=42), X_train, X_test),
+        "LogisticRegression": (LogisticRegression(max_iter=1000), X_train_scaled, X_test_scaled),
+        "MultinomialNB": (MultinomialNB(), X_train_nonneg, X_test_nonneg),
+        "GaussianNB": (GaussianNB(), X_train, X_test),
+        "SVC_Linear": (SVC(kernel='linear', C=1.0, random_state=42), X_train, X_test),
+        "XGBoost": (XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss'), X_train, X_test),
+        "kNN": (KNeighborsClassifier(n_neighbors=5), X_train_scaled, X_test_scaled),
+        "MLP_NeuralNet": (MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=1000, random_state=42), X_train_scaled, X_test_scaled),
+        "LightGBM": (LGBMClassifier(random_state=42, verbose=-1), X_train, X_test),
+        "AdaBoost": (AdaBoostClassifier(n_estimators=100, random_state=42), X_train, X_test),
+        "HistGradientBoost": (HistGradientBoostingClassifier(random_state=42), X_train, X_test),
+        "PassiveAggressive": (PassiveAggressiveClassifier(max_iter=1000, random_state=42), X_train_scaled, X_test_scaled)
+    }
+
+    for name, (model, xtr, xte) in models.items():
+        model.fit(xtr, y_train)
+        results[name] = round(model.score(xte, y_test), 4)
+    
+    return results
+
+vector_options = [
+    "empath", 
+    "sentence_bert", 
+    "tf_idf", 
+    "empath_vec_with_base_word_list", 
+    "empath_vec_shared_llm_word_lsit"
+]
+
+all_results = []
+
+# Generate all possible combinations (from 1 to 5 elements)
+for r in range(1, len(vector_options) + 1):
+    for combo in itertools.combinations(vector_options, r):
+        combo_list = list(combo)
+        print(f"Running for: {combo_list}")
+        
+        # Load and split data
+        X_train, X_test, y_train, y_test = data_set_up(combo_list)
+        
+        # Run models
+        scores = test_all_models_write_to_csv(X_train, X_test, y_train, y_test)
+        
+        # Add metadata for the row
+        scores['vector_types'] = ", ".join(combo_list)
+        all_results.append(scores)
+
+# Convert to DataFrame and reorder columns so 'vector_types' is first
+df = pd.DataFrame(all_results)
+cols = ['vector_types'] + [c for c in df.columns if c != 'vector_types']
+df = df[cols]
+
+# Save to CSV
+df.to_csv(VECTOR_SCORES, index=False)
+print("Done! Results saved to model_results.csv")
