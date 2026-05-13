@@ -101,6 +101,18 @@ def concat_with_weight(e_vec, t_vec, e_weight, t_weight):
     
     return weighted_e + weighted_t
 
+def concat_with_weight_for_multi_topic_vec(e_vec, t_vecs, e_weight = 1.0, t_weight = 1.0):
+    if isinstance(e_vec, dict):
+        e_vec = list(e_vec.values())
+    for i in range(len(t_vecs)):
+        if isinstance(t_vecs[i], dict):
+            t_vecs[i] = list(t_vecs[i].values())
+    
+    resulting_vec = [x * e_weight for x in e_vec]
+    for t in t_vecs:
+        resulting_vec = resulting_vec + [x * t_weight for x in t]
+    return resulting_vec
+
 def cosine_similarity(vec1, vec2):
     if type(vec1) is not type(vec2):
         raise ValueError("Both vectors must be the same type.")
@@ -188,7 +200,10 @@ if __name__ == "__main__":
     isbn_3 = "0425176428"
     isbn_list = [isbn_1, isbn_2, isbn_3]
     for i in isbn_list:
-        temp_e = get_vector_by_isbn(i, "empath_vec_gemini_word_list")
-        print(temp_e)
+        temp_t_1 = get_vector_by_isbn(i, "empath_vec_gemini_word_list")
+        temp_t_2 = get_vector_by_isbn(i, "empath")
+        temp_t_3 = get_vector_by_isbn(i, "empath_vec_shared_llm_word_lsit")
+        temp_e = get_vector_by_isbn(i, "emotion")
+        print(concat_with_weight_for_multi_topic_vec(temp_e, [temp_t_1, temp_t_2, temp_t_3], 0.2, 0.9))
         
 
