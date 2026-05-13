@@ -43,7 +43,7 @@ def get_vector_by_isbn(isbn: str, vector_type: str):
         record = BASE_BOOK_DATA_CACHE.get(isbn)
     elif vector_type in {"empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"}:
         record = EMPATH_7D_DATA_CACHE.get(isbn)
-    else: raise ValueError(f"Invalid vector_type. Must be one of {valid_types}")
+    else: raise ValueError(f"{vector_type} is invalid vector_type. Must be one of {valid_types}")
     
     if not record:
         # Better to return None or raise a specific KeyError if ISBN isn't found

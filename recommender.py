@@ -7,6 +7,7 @@ from Vectorizer.EmotionConditionedTopicVectorMaker import EmotionConditionedTopi
 from Vectorizer.CorrelationCombo import combine_vectors
 import itertools
 import numpy as np
+from itertools import combinations
 
 # ---- Paths ----
 
@@ -106,6 +107,7 @@ def make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, 
         return concat_with_weight(emotion_profile, general_stem_topic_vec, emotion_weight, topic_weight)
 
 def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_types = ["tf_idf"], emotion_weight = 1.0, topic_weight = 1.0):
+    print(topic_types)
     general_stem_topic_vec = general_stem_topic_vec_maker_multi_topic(topic_types) 
     with open(test_data_file, 'r') as file:
         data = json.load(file)
@@ -113,7 +115,7 @@ def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion
     for item in tqdm(data):
         profile_books = item['candidate_profile']
         try: 
-            candidate_profile = make_candidate_profile_for_multi_topic(profile_books, emotion_type, topic_types, general_stem_topic_vec, emotion_weight, topic_weight)
+            candidate_profile = make_candidate_profile_for_multi_topic(profile_books, emotion_type, general_stem_topic_vec, emotion_weight, topic_weight)
             recomendation_books = item['recommendation_list']
             for book in recomendation_books:
                 book_vec = handle_book_for_multi_topic(book['isbn'], emotion_type, topic_types, emotion_weight, topic_weight)
@@ -123,7 +125,7 @@ def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion
             print(e)
             print(item['user_id'])
     topic_string = "_".join(topic_types)
-    output_file_path = f"{output_file_path}/{emotion_type}_with_weight_{emotion_weight}_{topic_string}_with_weight_{topic_weight}.json"
+    output_file_path = f"{output_folder}/{emotion_type}_with_weight_{emotion_weight}_{topic_string}_with_weight_{topic_weight}.json"
     with open(output_file_path, 'w') as f:
         json.dump(data, f, indent=4)
     
@@ -239,10 +241,29 @@ def run_empath_7D(test_data_file):
             recommend(test_data_file, emotion_type=e_type, topic_type=t_type, emotion_weight=0.1, topic_weight=0.9)
 
 
+def run_multi_topic_vec_rec():
+    topic_types = ["empath", "tf-idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
+
+    all_combinations = []
+
+    for r in range(1, len(topic_types) + 1):
+        all_combinations.extend(combinations(topic_types, r))
+
+    # optional: convert tuples to lists
+    all_combinations = [list(c) for c in all_combinations]
+
+    for topic_combo in tqdm(all_combinations):
+        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=topic_combo)
+        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=topic_combo, topic_weight=0.9, emotion_weight=0.1)
+        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion_intensity", topic_types=topic_combo)
+        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion_intensity", topic_types=topic_combo, topic_weight=0.9, emotion_weight=0.1)
+
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
 
 #test_weights(topic_type="sentance_bert")
 
-run_empath_7D(test_data_file=TEST_DATA_FILE)
+run_multi_topic_vec_rec()
+
+# recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=["empath", "empath_vec_with_base_word_list"])
 
 #recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", reduce=True)
