@@ -3,23 +3,21 @@ import numpy as np
 import pandas as pd
 import os
 import itertools
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, HistGradientBoostingClassifier, ExtraTreesClassifier
+from sklearn.metrics import classification_report, accuracy_score, precision_score, recall_score, f1_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB, GaussianNB
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.svm import SVC
-from sklearn.metrics import classification_report
+from sklearn.svm import SVC, LinearSVC
 from xgboost import XGBClassifier
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedKFold, cross_val_score
 from scipy.stats import wilcoxon
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from lightgbm import LGBMClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.linear_model import PassiveAggressiveClassifier, RidgeClassifier
+from sklearn.pipeline import make_pipeline
 import joblib
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -219,20 +217,269 @@ def run_all():
     df.to_csv(VECTOR_SCORES, index=False)
     print("Done! Results saved to model_results.csv")
 
+def evaluate_model(name, model, X_train, X_test, y_train, y_test, cv):
+    results = {}
+
+    model.fit(X_train, y_train)
+
+    train_pred = model.predict(X_train)
+    test_pred = model.predict(X_test)
+
+    train_acc = accuracy_score(y_train, train_pred)
+    test_acc = accuracy_score(y_test, test_pred)
+
+    cv_scores = cross_val_score(model, X_train, y_train, cv=cv)
+
+    results["model"] = name
+    results["train_acc"] = train_acc
+    results["test_acc"] = test_acc
+    results["cv_mean"] = cv_scores.mean()
+    results["cv_std"] = cv_scores.std()
+    results["overfit_gap"] = train_acc - cv_scores.mean()
+
+    results["precision"] = precision_score(y_test, test_pred)
+    results["recall"] = recall_score(y_test, test_pred)
+    results["f1"] = f1_score(y_test, test_pred)
+
+    return results
+
+def get_models():
+    return {
+        "RandomForest": RandomForestClassifier(
+            n_estimators=300,
+            max_depth=10,
+            min_samples_leaf=5,
+            max_features="sqrt",
+            random_state=42
+        ),
+
+        "ExtraTrees": ExtraTreesClassifier(
+            n_estimators=300,
+            random_state=42
+        ),
+
+        "LogReg": make_pipeline(
+            StandardScaler(),
+            LogisticRegression(max_iter=2000)
+        ),
+
+        "RidgeClassifier": make_pipeline(
+            StandardScaler(),
+            RidgeClassifier()
+        ),
+
+        "LinearSVC": make_pipeline(
+            StandardScaler(),
+            LinearSVC(random_state=42)
+        ),
+
+        "KNN": make_pipeline(
+            StandardScaler(),
+            KNeighborsClassifier(n_neighbors=5)
+        ),
+
+        "MLP": make_pipeline(
+            StandardScaler(),
+            MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=1000, random_state=42)
+        ),
+
+        "GaussianNB": GaussianNB(),
+
+        "MultinomialNB": make_pipeline(
+            MinMaxScaler(),
+            MultinomialNB()
+        ),
+
+        "XGBoost": XGBClassifier(
+            n_estimators=200,
+            max_depth=6,
+            learning_rate=0.1,
+            eval_metric="logloss",
+            random_state=42
+        ),
+
+        "LightGBM": LGBMClassifier(random_state=42, verbose=-1),
+
+        "AdaBoost": AdaBoostClassifier(n_estimators=200, random_state=42),
+
+        "HistGradientBoost": HistGradientBoostingClassifier(random_state=42),
+
+        "PassiveAggressive": make_pipeline(
+            StandardScaler(),
+            PassiveAggressiveClassifier(max_iter=1000, random_state=42)
+        )
+    }
+
+def test_all_new_models_write_to_csv(X_train, X_test, y_train, y_test):
+    results = []
+
+    cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+
+    models = get_models()
+
+    for name, model in models.items():
+
+        Xtr = X_train
+        Xte = X_test
+
+        try:
+            res = evaluate_model(
+                name=name,
+                model=model,
+                X_train=Xtr,
+                X_test=Xte,
+                y_train=y_train,
+                y_test=y_test,
+                cv=cv
+            )
+
+            results.append(res)
+
+        except Exception as e:
+            print(f"Model {name} failed: {e}")
+
+    return results
+
+def run_with_just_sbert():
+    X_train, X_test, y_train, y_test = data_set_up(["sentence_bert"])
+
+    model_results = test_all_new_models_write_to_csv(
+        X_train, X_test, y_train, y_test
+    )
+
+    for res in model_results:
+        res["vector_types"] = ", ".join(["sentence_bert"])
+        res["n_features"] = X_train.shape[1]
+        res["n_train"] = X_train.shape[0]
+        res["n_test"] = X_test.shape[0]
+
+        df_step = pd.DataFrame(model_results)
+        
+        # Reorder columns so vector_types and model are first
+        cols = ["vector_types", "model"] + [c for c in df_step.columns if c not in ["vector_types", "model"]]
+        df_step = df_step[cols]
+
+        # Write to CSV: 
+        # 'a' means append. 
+        # header=not os.path.exists(...) ensures we only write the header once.
+        df_step.to_csv(
+            VECTOR_SCORES, 
+            mode='a', 
+            index=False, 
+            header=not os.path.exists(VECTOR_SCORES)
+        )
+        
+        print(f"Saved {len(model_results)} results")
+
+
+
+def run_all_new():
+    vector_options = [
+        "empath",
+        "sentence_bert",
+        "tf_idf",
+        "empath_vec_with_base_word_list",
+        "empath_vec_shared_llm_word_lsit"
+    ]
+
+    for r in range(1, len(vector_options) + 1):
+        for combo in itertools.combinations(vector_options, r):
+
+            combo_list = list(combo)
+            print(f"Running: {combo_list}")
+
+            X_train, X_test, y_train, y_test = data_set_up(combo_list)
+
+            model_results = test_all_new_models_write_to_csv(
+                X_train, X_test, y_train, y_test
+            )
+
+            for res in model_results:
+                res["vector_types"] = ", ".join(combo_list)
+                res["n_features"] = X_train.shape[1]
+                res["n_train"] = X_train.shape[0]
+                res["n_test"] = X_test.shape[0]
+
+            df_step = pd.DataFrame(model_results)
+            
+            # Reorder columns so vector_types and model are first
+            cols = ["vector_types", "model"] + [c for c in df_step.columns if c not in ["vector_types", "model"]]
+            df_step = df_step[cols]
+
+            # Write to CSV: 
+            # 'a' means append. 
+            # header=not os.path.exists(...) ensures we only write the header once.
+            df_step.to_csv(
+                VECTOR_SCORES, 
+                mode='a', 
+                index=False, 
+                header=not os.path.exists(VECTOR_SCORES)
+            )
+            
+            print(f"Saved {len(model_results)} results for {combo_list}")
+
+    print(f"\nDone! All results saved to {VECTOR_SCORES}")
+
+
 def save_model():
-    best_vectors = ["empath", "sentence_bert", "tf_idf", "empath_vec_with_base_word_list"]
+    best_vectors = ["sentence_bert"]
     X_train, X_test, y_train, y_test = data_set_up(best_vectors)
 
-    best_rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-    best_rf_model.fit(X_train, y_train)
+    best_model = GaussianNB()
+    best_model.fit(X_train, y_train)
 
     # 3. Save the model to a file
-    model_filename = "Classifier/best_rf_model.joblib"
-    joblib.dump(best_rf_model, model_filename)
+    model_filename = "Classifier/best_model_GaussianNB.joblib"
+    joblib.dump(best_model, model_filename)
 
     print(f"Model saved successfully as {model_filename}")
 
-save_model()
+def check_for_overfitting_RandomForestClassifier():
+    # the Base RandomForestClassifier was overfitting 
+    best_vectors = ["empath", "sentence_bert", "tf_idf", "empath_vec_with_base_word_list"]
+    X_train, X_test, y_train, y_test = data_set_up(best_vectors)
+
+    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+
+    rf.fit(X_train, y_train)
+
+    # Check train/test performance
+    print("Train Accuracy:", rf.score(X_train, y_train))
+    print("Test Accuracy:", rf.score(X_test, y_test))
+
+    # Cross-validation on training data
+    scores = cross_val_score(rf, X_train, y_train, cv=5)
+
+    print("CV Scores:", scores)
+    print("CV Mean:", scores.mean())
+    print("CV Std:", scores.std())
+
+
+def updated_RandomForestClassifier():
+    best_vectors = ["empath", "sentence_bert", "tf_idf", "empath_vec_with_base_word_list"]
+    X_train, X_test, y_train, y_test = data_set_up(best_vectors)
+
+    rf = RandomForestClassifier(
+        n_estimators=300,
+        max_depth=10,
+        min_samples_leaf=5,
+        min_samples_split=10,
+        max_features='sqrt',
+        random_state=42
+    )
+
+    rf.fit(X_train, y_train)
+
+    # Check train/test performance
+    print("Train Accuracy:", rf.score(X_train, y_train))
+    print("Test Accuracy:", rf.score(X_test, y_test))
+
+    # Cross-validation on training data
+    scores = cross_val_score(rf, X_train, y_train, cv=5)
+
+    print("CV Scores:", scores)
+    print("CV Mean:", scores.mean())
+    print("CV Std:", scores.std())
 
 def test_model_usage():
     loaded_rf = joblib.load("Classifier/best_rf_model.joblib")
@@ -246,4 +493,4 @@ def test_model_usage():
     # elif isbn in stem:
     #     label = 1
 
-test_model_usage()
+save_model()
