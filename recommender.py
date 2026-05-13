@@ -242,7 +242,7 @@ def run_empath_7D(test_data_file):
 
 
 def run_multi_topic_vec_rec():
-    topic_types = ["empath", "tf-idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
+    topic_types = ["empath", "tf_idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
 
     all_combinations = []
 
