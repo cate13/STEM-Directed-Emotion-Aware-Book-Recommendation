@@ -530,8 +530,8 @@ def compare_baseline_to_others_llm():
 
 # compare_baseline_to_others_llm()
 
-#compare_baseline_to_others(target_folder="recommendations/1_plus_stem_books", baseline_filename="recommendation_using_emotion_intensity_sentance_bert.json", output_filename="Wilcoxon_compared_to_emotion_intensity_s_bert.csv")
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", baseline_filename="emotion_intensity_with_weight_0.1_empath_empath_vec_shared_llm_word_lsit_with_weight_0.9.json", output_filename="Wilcoxon.csv")
 
-aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/empath_7D")
+aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test")
 
 #compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
