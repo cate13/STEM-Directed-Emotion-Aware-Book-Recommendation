@@ -245,7 +245,7 @@ def aggregate_metrics_to_csv(target_folder, output_filename="results.csv"):
         print(f"Successfully wrote {len(all_rows)} rows to {output_filename}")
 
 
-def compare_baseline_to_others(target_folder, baseline_filename, output_filename="wilcoxon_results.csv"):
+def compare_baseline_to_others(target_folder, baseline_filename):
     baseline_path = os.path.join(target_folder, baseline_filename)
     if not os.path.exists(baseline_path):
         print(f"Baseline file {baseline_filename} not found.")
@@ -264,8 +264,9 @@ def compare_baseline_to_others(target_folder, baseline_filename, output_filename
         comp_path = os.path.join(target_folder, comp_file)
         try:
             comp_data = evaluate_file(comp_path)
-            row = {"Comparison File": comp_file}
             
+            row = {"Comparison File": file_name_to_column_entry(comp_file)}
+
             for metric in baseline_data.keys():
                 base_scores = baseline_data[metric]
                 comp_scores = comp_data[metric]
@@ -302,13 +303,14 @@ def compare_baseline_to_others(target_folder, baseline_filename, output_filename
 
     # Write results
     if results_rows:
-        out_path = os.path.join(target_folder, output_filename)
+        output_file_name = f"Wilcoxon Compared to {file_name_to_column_entry(baseline_filename)}.csv"
+        out_path = os.path.join(target_folder, output_file_name)
         headers = results_rows[0].keys()
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=headers)
             writer.writeheader()
             writer.writerows(results_rows)
-        print(f"Successfully wrote Wilcoxon results to {output_filename}")
+        print(f"Successfully wrote Wilcoxon results to {output_file_name}")
 
 
 def normalize(text):
@@ -525,13 +527,8 @@ def compare_baseline_to_others_llm():
 
 
 
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", baseline_filename="bilinear_pool_emotion_tf_idf.json")
 
-# print(calculate_metrics("recommendations/1_plus_stem_books_weight/emotion_with_weight_0.001__empath_with_weight_1.0.json", is_llm=False))
 
-# compare_baseline_to_others_llm()
+# aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison")
 
-#compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", baseline_filename="emotion_intensity_with_weight_0.1_empath_empath_vec_shared_llm_word_lsit_with_weight_0.9.json", output_filename="Wilcoxon.csv")
-
-#aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool")
-
-compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool/for_wilcox", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")

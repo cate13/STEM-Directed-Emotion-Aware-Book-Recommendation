@@ -168,7 +168,7 @@ def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion
         json.dump(data, f, indent=4)
     
 
-def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0, use_matrix_combo = False, reduce = False):
+def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0):
     general_stem_topic_vec = general_stem_topic_vec_maker(topic_type)
     with open(test_data_file, 'r') as file:
         data = json.load(file)
@@ -176,11 +176,11 @@ def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "
     for item in tqdm(data):
         profile_books = item['candidate_profile']
         try:
-            candidate_profile = make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, topic_type, emotion_weight, topic_weight, use_matrix_combo, reduce)
+            candidate_profile = make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, topic_type, emotion_weight, topic_weight)
             recomendation_books = item['recommendation_list']
             for book in recomendation_books:
                 try:
-                    book_vec = handle_book(book['isbn'], emotion_type, topic_type, emotion_weight, topic_weight, use_matrix_combo, reduce)
+                    book_vec = handle_book(book['isbn'], emotion_type, topic_type, emotion_weight, topic_weight)
                     #book_vec = get_vector_by_isbn(book['isbn'], emotion_type)
                     cos = cosine_similarity(candidate_profile, book_vec)
                     book['cos'] = cos
@@ -190,12 +190,7 @@ def recommend(test_data_file, emotion_type = "emotion_intensity", topic_type = "
             print(e)
             print(item['user_id'])
     
-    if use_matrix_combo & reduce:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_reduced_{topic_type}_correlation_combo_with_{emotion_weight}.json"
-    elif use_matrix_combo:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_{topic_type}_correlation_combo_with_{emotion_weight}.json"
-    else:
-        output_file_name = f"recommendations/12-25_age_10_plus_highly_rated_books/empath_7D/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
+    output_file_name = f"{output_folder}/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
     with open(output_file_name, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -205,111 +200,6 @@ def test_weights(emotion_type="emotion", topic_type="tf_idf"):
         e_weight = (i + 1) / 10
         t_weight = 1.0 - (i / 10)
 
-        recommend(TEST_DATA_FILE, emotion_type, topic_type, emotion_weight=e_weight, topic_weight=t_weight)
+        recommend(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type=emotion_type, topic_type=topic_type, emotion_weight=e_weight, topic_weight=t_weight)
 
-def run_all_recommendations(test_data_file):
-    # Define the parameter ranges
-    emotion_types = ["emotion_intensity", "emotion"]
-    topic_types = ["empath", "tf_idf"]
-    matrix_options = [True, False]
-    
-    # Generate the 11 weight pairs (0.0/1.0, 0.1/0.9 ... 1.0/0.0)
-    weights = [(round(w, 1), round(1.0 - w, 1)) for w in np.arange(0.0, 1.1, 0.1)]
-
-    all_configs = []
-
-    for e_type in emotion_types:
-        for t_type in topic_types:
-            for e_w, t_w in weights:
-                for use_matrix in matrix_options:
-                    
-                    # Logic for the 'reduce' flag
-                    reduce_options = [False]
-                    if t_type == "empath":
-                        reduce_options = [True, False]
-                    
-                    for should_reduce in reduce_options:
-                        all_configs.append({
-                            "emotion_type": e_type,
-                            "topic_type": t_type,
-                            "emotion_weight": e_w,
-                            "topic_weight": t_w,
-                            "use_matrix_combo": use_matrix,
-                            "reduce": should_reduce
-                        })
-
-    for c in all_configs:
-        recommend(
-            test_data_file, 
-            emotion_type=c["emotion_type"],
-            topic_type=c["topic_type"],
-            emotion_weight=c["emotion_weight"],
-            topic_weight=c["topic_weight"],
-            use_matrix_combo=c["use_matrix_combo"],
-            reduce=c["reduce"]
-        )
-
-def run_emotion_v_empath(test_data_file):
-    emotion_types = ["emotion_intensity", "emotion"]
-    topic_type = "empath"
-
-    emotion_weights = [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
-    topic_weights = [1.0, 1.5, 2.0, 7.5, 10.0, 20.0]
-
-    combinations = itertools.product(emotion_types, emotion_weights, topic_weights)
-
-    for e_type, e_weight, t_weight in tqdm(combinations):
-        recommend(
-            test_data_file, 
-            emotion_type=e_type,
-            topic_type=topic_type,
-            emotion_weight=e_weight,
-            topic_weight=t_weight,
-            use_matrix_combo=False,
-            reduce=False,
-        )
-
-def run_empath_7D(test_data_file):
-    emotion_types = ["emotion_intensity", "emotion"]
-    topic_types = ["empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
-
-    for t_type in topic_types:
-        for e_type in tqdm(emotion_types):
-            recommend(test_data_file, emotion_type=e_type, topic_type=t_type)
-            recommend(test_data_file, emotion_type=e_type, topic_type=t_type, emotion_weight=0.1, topic_weight=0.9)
-
-def run_bilinear_pool(test_data_file):
-    emotion_types = ["emotion_intensity", "emotion"]
-    topic_types = ["empath", "tf_idf", "empath_vec_shared_llm_word_lsit"]
-
-    for e in emotion_types:
-        for t in topic_types:
-            recommend_bilinear_pool(test_data_file, "recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool", e, t)
-
-
-def run_multi_topic_vec_rec():
-    topic_types = ["empath", "tf_idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
-
-    all_combinations = []
-
-    for r in range(1, len(topic_types) + 1):
-        all_combinations.extend(combinations(topic_types, r))
-
-    # optional: convert tuples to lists
-    all_combinations = [list(c) for c in all_combinations]
-
-    for topic_combo in tqdm(all_combinations):
-        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=topic_combo)
-        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=topic_combo, topic_weight=0.9, emotion_weight=0.1)
-        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion_intensity", topic_types=topic_combo)
-        recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion_intensity", topic_types=topic_combo, topic_weight=0.9, emotion_weight=0.1)
-
-#recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", emotion_weight = 0.001, topic_weight = 1.0)
-
-#test_weights(topic_type="sentance_bert")
-
-run_bilinear_pool(TEST_DATA_FILE)
-
-# recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=["empath", "empath_vec_with_base_word_list"])
-
-#recommend(TEST_DATA_FILE, emotion_type="emotion", topic_type="empath", reduce=True)
+recommend_bilinear_pool(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type="emotion_intensity", topic_type="tf_idf")
