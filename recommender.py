@@ -2,7 +2,7 @@ import json
 import os
 from tqdm import tqdm
 from collections import Counter
-from Recomender_Helper.vector_helper import get_vector_by_isbn, cosine_similarity, average_vectors, concat, concat_with_weight, concat_with_weight_for_multi_topic_vec
+from Recomender_Helper.vector_helper import get_vector_by_isbn, cosine_similarity, average_vectors, combine_using_bilinear_pool, concat_with_weight, concat_with_weight_for_multi_topic_vec
 from Vectorizer.EmotionConditionedTopicVectorMaker import EmotionConditionedTopicVectorMaker
 from Vectorizer.CorrelationCombo import combine_vectors
 import itertools
@@ -32,6 +32,12 @@ def handle_book_for_multi_topic(isbn, emotion_type, topic_type_list, emotion_wei
     for t in topic_type_list:
         topic_vec_list.append(get_vector_by_isbn(isbn, t))
     return concat_with_weight_for_multi_topic_vec(emotion_vec, topic_vec_list, emotion_weight, topic_weight)
+
+def handle_book_for_bilinear_pool(isbn, emotion_type, topic_type):
+    emotion_vec = get_vector_by_isbn(isbn, emotion_type)
+    topic_vec = get_vector_by_isbn(isbn, topic_type)
+    return combine_using_bilinear_pool(emotion_vec, topic_vec)
+
 
 def general_stem_topic_vec_maker_multi_topic(topic_type_list):
     stem_isbns = set()
@@ -72,6 +78,20 @@ def general_stem_topic_vec_maker(topic_type):
     #print(f"no vector for {missing_stem_isbn} STEM books")
     return average_vectors(stem_vecs)
 
+def make_candidate_profile_bilinear_pool(profile_books, emotion_type, general_stem_topic_vec):
+    emotion_vectors = []
+    # print(profile_books)
+    for book in profile_books:
+        isbn = book['isbn']
+        try:
+            emotion_vectors.append(get_vector_by_isbn(isbn, emotion_type))
+        except Exception as e:
+            print(e)
+    if len(emotion_vectors) == 0:
+        raise Exception(f"Missing all profile books")
+    emotion_profile = average_vectors(emotion_vectors)
+    return combine_using_bilinear_pool(emotion_profile, general_stem_topic_vec)
+
 def make_candidate_profile_for_multi_topic(profile_books, emotion_type, general_stem_topic_vec, emotion_weight = 1.0, topic_weight = 1.0):
     # since the general stem vector has already had all the types added 
     # concat_with_weight_for_multi_topic_vec isn't needed 
@@ -105,6 +125,24 @@ def make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, 
         return combine_vectors(emotion_profile, emotion_type, general_stem_topic_vec, topic_type, reduce, emotion_weight)
     else:
         return concat_with_weight(emotion_profile, general_stem_topic_vec, emotion_weight, topic_weight)
+
+def recommend_bilinear_pool(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "empath"):
+    general_stem_topic_vec = general_stem_topic_vec_maker(topic_type)
+    with open(test_data_file, 'r') as file:
+        data = json.load(file)
+    
+    for item in tqdm(data):
+        profile_books = item['candidate_profile']
+        candidate_profile = make_candidate_profile_bilinear_pool(profile_books, emotion_type, general_stem_topic_vec)
+        recomendation_books = item['recommendation_list']
+        for book in recomendation_books:
+            book_vec = handle_book_for_bilinear_pool(book['isbn'], emotion_type, topic_type)
+            cos = cosine_similarity(candidate_profile, book_vec)
+            book['cos'] = cos
+    
+    output_file_path = f"{output_folder}/bilinear_pool_{emotion_type}_{topic_type}.json"
+    with open(output_file_path, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_types = ["tf_idf"], emotion_weight = 1.0, topic_weight = 1.0):
     print(topic_types)
@@ -240,6 +278,14 @@ def run_empath_7D(test_data_file):
             recommend(test_data_file, emotion_type=e_type, topic_type=t_type)
             recommend(test_data_file, emotion_type=e_type, topic_type=t_type, emotion_weight=0.1, topic_weight=0.9)
 
+def run_bilinear_pool(test_data_file):
+    emotion_types = ["emotion_intensity", "emotion"]
+    topic_types = ["empath", "tf_idf", "empath_vec_shared_llm_word_lsit"]
+
+    for e in emotion_types:
+        for t in topic_types:
+            recommend_bilinear_pool(test_data_file, "recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool", e, t)
+
 
 def run_multi_topic_vec_rec():
     topic_types = ["empath", "tf_idf", "empath_vec_with_base_word_list", "empath_vec_shared_llm_word_lsit", "empath_vec_chat_gpt_word_list", "empath_vec_gemini_word_list"]
@@ -262,7 +308,7 @@ def run_multi_topic_vec_rec():
 
 #test_weights(topic_type="sentance_bert")
 
-run_multi_topic_vec_rec()
+run_bilinear_pool(TEST_DATA_FILE)
 
 # recommend_multi_topic(test_data_file=TEST_DATA_FILE, output_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_topic_test", emotion_type="emotion", topic_types=["empath", "empath_vec_with_base_word_list"])
 

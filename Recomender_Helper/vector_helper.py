@@ -90,6 +90,30 @@ def concat(vec1, vec2):
         vec2 = list(vec2.values())
     return vec1 + vec2
 
+def combine_using_bilinear_pool(e_vec, t_vec):
+    if isinstance(e_vec, dict):
+        e_vec = list(e_vec.values())
+    if isinstance(t_vec, dict):
+        t_vec = list(t_vec.values())
+    
+    vec_a = np.array(e_vec)
+    vec_a = np.append(vec_a, 1.0)
+    vec_b = np.array(t_vec)
+    vec_b = np.append(vec_b, 1.0)
+
+    outer_product = np.outer(vec_a, vec_b)
+    flattened = outer_product.flatten()
+    normalized = np.sign(flattened) * np.sqrt(np.abs(flattened))
+    norm = np.linalg.norm(normalized)
+
+    if norm > 0:
+        final_vector = normalized / norm
+    else:
+        final_vector = normalized
+        
+    return final_vector
+
+
 def concat_with_weight(e_vec, t_vec, e_weight, t_weight):
     if isinstance(e_vec, dict):
         e_vec = list(e_vec.values())
@@ -200,10 +224,8 @@ if __name__ == "__main__":
     isbn_3 = "0425176428"
     isbn_list = [isbn_1, isbn_2, isbn_3]
     for i in isbn_list:
-        temp_t_1 = get_vector_by_isbn(i, "empath_vec_gemini_word_list")
         temp_t_2 = get_vector_by_isbn(i, "empath")
-        temp_t_3 = get_vector_by_isbn(i, "empath_vec_shared_llm_word_lsit")
         temp_e = get_vector_by_isbn(i, "emotion")
-        print(concat_with_weight_for_multi_topic_vec(temp_e, [temp_t_1, temp_t_2, temp_t_3], 0.2, 0.9))
+        print(combine_using_bilinear_pool(temp_e, temp_t_2))
         
 
