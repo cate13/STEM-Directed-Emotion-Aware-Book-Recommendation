@@ -527,7 +527,7 @@ def compare_baseline_to_others_llm():
 
 
 
-compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", baseline_filename="bilinear_pool_emotion_tf_idf.json")
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
 
 
 # aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison")
