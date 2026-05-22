@@ -4,7 +4,16 @@ from tqdm import tqdm
 
 # 1. Load the book metadata from the JSONL file into a lookup dictionary
 book_lookup = {}
-with open('processed_data/books_with_subjects.jsonl', 'r', encoding='utf-8') as f:
+with open('processed_data/books_with_subjects_read_by_older_readers.jsonl', 'r', encoding='utf-8') as f:
+    for line in f:
+        book_data = json.loads(line)
+        isbn = book_data.get("ISBN")
+        if isbn:
+            book_lookup[isbn] = {
+                "title": book_data.get("Book-Title", "Unknown Title"),
+                "author": book_data.get("Book-Author", "Unknown Author")
+            }
+with open('processed_data/books_with_subjects_read_by_younger_readers.jsonl', 'r', encoding='utf-8') as f:
     for line in f:
         book_data = json.loads(line)
         isbn = book_data.get("ISBN")
@@ -15,7 +24,7 @@ with open('processed_data/books_with_subjects.jsonl', 'r', encoding='utf-8') as 
             }
 
 # 2. Load your main user profiles JSON file
-with open('user_eval_sets/users_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json', 'r', encoding='utf-8') as f:
+with open('user_eval_sets/users_12_25_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json', 'r', encoding='utf-8') as f:
     users = json.load(f)
 
 # 3. Enrich the data
