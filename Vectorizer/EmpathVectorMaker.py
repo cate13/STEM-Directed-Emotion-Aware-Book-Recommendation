@@ -11,3 +11,4 @@ class EmpathVectorMaker:
     def getEmapthVector(self, text, categories=["science", "technology", "engineering", "mathematics"]):
         return self.lexicon.analyze(text, categories=categories, normalize=True)
     
+

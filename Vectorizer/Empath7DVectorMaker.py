@@ -22,6 +22,6 @@ class Empath7DVectorMaker:
     def getEmapthVector(self, text, categories=["mathematics", "physics", "biology", "chemistry", "engineering", "computer_science", "earth_science"]):
         return self.lexicon.analyze(text, categories=categories, normalize=True)
 
-#temp = Empath7DVectorMaker()
+temp = Empath7DVectorMaker()
 
 # print(temp.getEmapthVector("Testing and work and math and school and learning and such"))
