@@ -573,7 +573,7 @@ def compare_best_to_llm():
                 else:
                     # 'greater' tests if baseline > comparison
                     # zero_method="pratt" or "wilcox" handles ties
-                    _, p_val = wilcoxon(b_clean, c_clean, alternative='greater')
+                    _, p_val = wilcoxon(b_clean, c_clean, alternative='less')
                     # 2. Use scientific notation or more decimals if you don't want 0.0
                     row[f"{metric}_p_val"] = "{:.2e}".format(p_val) if p_val < 0.0001 else round(p_val, 5)
 
@@ -585,7 +585,7 @@ def compare_best_to_llm():
     # Write results
     if results_rows:
         
-        out_path = f"recommendations/best_v_llm_Wilcoxon.csv"
+        out_path = f"recommendations/is_best_significantly_less_than_llm_Wilcoxon.csv"
         headers = results_rows[0].keys()
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=headers)
