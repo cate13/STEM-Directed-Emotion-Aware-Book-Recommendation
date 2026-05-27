@@ -204,4 +204,11 @@ def test_weights(emotion_type="emotion", topic_type="tf_idf"):
 
 #recommend_bilinear_pool(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type="emotion_intensity", topic_type="tf_idf")
 
-recommend(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc", "emotion", "tf_idf", 1.0, 1.0)
+def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated_books/OG_base_combo"):
+    recommend(TEST_DATA_FILE, output_file, "emotion", "tf_idf", 1.0, 1.0)
+    recommend(TEST_DATA_FILE, output_file, "emotion", "empath", 1.0, 1.0)
+
+    recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "tf_idf", 1.0, 1.0)
+    recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "empath", 1.0, 1.0)
+
+run_base_combo()
