@@ -38,7 +38,6 @@ def handle_book_for_bilinear_pool(isbn, emotion_type, topic_type):
     topic_vec = get_vector_by_isbn(isbn, topic_type)
     return combine_using_bilinear_pool(emotion_vec, topic_vec)
 
-
 def general_stem_topic_vec_maker_multi_topic(topic_type_list):
     stem_isbns = set()
     print("Retreiving General STEM isbns")
@@ -58,7 +57,6 @@ def general_stem_topic_vec_maker_multi_topic(topic_type_list):
             stem_vecs.append(whole_topic_list)
     return average_vectors(stem_vecs)
     
-
 def general_stem_topic_vec_maker(topic_type):
     stem_isbns = set()
     print("Retreiving General STEM isbns")
@@ -168,7 +166,7 @@ def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion
         json.dump(data, f, indent=4)
     
 
-def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0):
+def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0, matrix_combo = False, reduce = False):
     general_stem_topic_vec = general_stem_topic_vec_maker(topic_type)
     with open(test_data_file, 'r') as file:
         data = json.load(file)
@@ -176,11 +174,11 @@ def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity",
     for item in tqdm(data):
         profile_books = item['candidate_profile']
         try:
-            candidate_profile = make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, topic_type, emotion_weight, topic_weight)
+            candidate_profile = make_candidate_profile(profile_books, emotion_type, general_stem_topic_vec, topic_type, emotion_weight, topic_weight, use_matrix_combo=matrix_combo, reduce=reduce)
             recomendation_books = item['recommendation_list']
             for book in recomendation_books:
                 try:
-                    book_vec = handle_book(book['isbn'], emotion_type, topic_type, emotion_weight, topic_weight)
+                    book_vec = handle_book(book['isbn'], emotion_type, topic_type, emotion_weight, topic_weight, use_matrix_combo=matrix_combo, reduce=reduce)
                     #book_vec = get_vector_by_isbn(book['isbn'], emotion_type)
                     cos = cosine_similarity(candidate_profile, book_vec)
                     book['cos'] = cos
@@ -190,7 +188,10 @@ def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity",
             print(e)
             print(item['user_id'])
     
-    output_file_name = f"{output_folder}/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
+    if matrix_combo:
+        output_file_name = f"{output_folder}/matrix_combo_{emotion_type}_{topic_type}_with_weight_{emotion_weight}.json"
+    else:
+        output_file_name = f"{output_folder}/{emotion_type}_with_weight_{emotion_weight}_{topic_type}_with_weight_{topic_weight}.json"
     with open(output_file_name, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -203,6 +204,26 @@ def test_weights(emotion_type="emotion", topic_type="tf_idf"):
         recommend(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type=emotion_type, topic_type=topic_type, emotion_weight=e_weight, topic_weight=t_weight)
 
 #recommend_bilinear_pool(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type="emotion_intensity", topic_type="tf_idf")
+
+def run_correlation_matrix_combo_reduce(test_data_file, output_folder):
+    emotion_types = ["emotion_intensity", "emotion"]
+    topic_types = ["empath"]
+
+    for emotion_type in emotion_types:
+        for topic_type in topic_types:
+            for i in range(1, 10):
+                emotion_weight = round(i * 0.1, 1)
+                recommend(
+                    test_data_file=test_data_file,
+                    output_folder=output_folder,
+                    emotion_type=emotion_type,
+                    topic_type=topic_type,
+                    emotion_weight=emotion_weight,
+                    topic_weight=1.0,
+                    matrix_combo=True,
+                    reduce=True
+                )
+
 
 def run_base_weight_recommendation_combinations(test_data_file, output_folder):
     # Define the parameter spaces
@@ -240,5 +261,4 @@ def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "tf_idf", 1.0, 1.0)
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "empath", 1.0, 1.0)
 
-
-run_base_weight_recommendation_combinations(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/basic_weight_tests")
+run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo")
