@@ -27,7 +27,7 @@ def _load_stem_isbns(stem_paths):
 
     return stem_isbns
 
-STEM_ISBNS = _load_stem_isbns(["processed_data/stem_isbns_from_classifier.txt", "processed_data/stem_isbns_from_cosine.txt", "processed_data/stem_isbns_from_classifier.txt"])
+STEM_ISBNS = _load_stem_isbns(["processed_data/stem_isbns_from_classifier.txt", "processed_data/stem_isbns_from_cosine.txt", "processed_data/stem_isbns_from_topic.txt"])
 
 def relevant(isbn):
     if isbn in STEM_ISBNS:
@@ -598,7 +598,7 @@ def compare_best_to_llm():
 # compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
 
 
-# aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc")
+aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison")
 #print(calculate_metrics("recommendations/LLM/with_stem_and_emotion/mistral_user_rankings_results.json", is_llm=True))
 
-compare_best_to_llm()
+#compare_best_to_llm()
