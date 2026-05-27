@@ -204,6 +204,35 @@ def test_weights(emotion_type="emotion", topic_type="tf_idf"):
 
 #recommend_bilinear_pool(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/sample_comparison", emotion_type="emotion_intensity", topic_type="tf_idf")
 
+def run_base_weight_recommendation_combinations(test_data_file, output_folder):
+    # Define the parameter spaces
+    emotion_types = ["emotion_intensity", "emotion"]
+    topic_types = ["tf_idf", "empath"]
+    
+    # Iterate through each combination of types
+    for emotion_type in emotion_types:
+        for topic_type in topic_types:
+            
+            # Loop for weights: 1 to 9 inclusive represents 0.1 to 0.9
+            for i in range(1, 10):
+                # Use rounding to prevent floating-point precision quirks
+                emotion_weight = round(i * 0.1, 1)
+                topic_weight = round(1.0 - emotion_weight, 1)
+                
+                # Optional: Print statement to track progress in the console
+                print(f"Running: {emotion_type} | {topic_type} | "
+                      f"Weights: {emotion_weight} / {topic_weight}")
+                
+                # Call your original recommend method
+                recommend(
+                    test_data_file=test_data_file,
+                    output_folder=output_folder,
+                    emotion_type=emotion_type,
+                    topic_type=topic_type,
+                    emotion_weight=emotion_weight,
+                    topic_weight=topic_weight
+                )
+
 def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated_books/OG_base_combo"):
     recommend(TEST_DATA_FILE, output_file, "emotion", "tf_idf", 1.0, 1.0)
     recommend(TEST_DATA_FILE, output_file, "emotion", "empath", 1.0, 1.0)
@@ -211,4 +240,5 @@ def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "tf_idf", 1.0, 1.0)
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "empath", 1.0, 1.0)
 
-run_base_combo()
+
+run_base_weight_recommendation_combinations(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/basic_weight_tests")
