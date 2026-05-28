@@ -595,7 +595,7 @@ def compare_best_to_llm():
 
 
 
-compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_v_weighted_wilcoxon", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool/for_wilcox", baseline_filename="bilinear_pool_emotion_intensity_empath.json")
 
 
 # aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc")
