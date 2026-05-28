@@ -595,10 +595,10 @@ def compare_best_to_llm():
 
 
 
-# compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/EASER_1_compared_best_weight", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/multi_v_weighted_wilcoxon", baseline_filename="emotion_intensity_with_weight_0.1_empath_with_weight_0.9.json")
 
 
-aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc")
+# aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc")
 #print(calculate_metrics("recommendations/LLM/with_stem_and_emotion/mistral_user_rankings_results.json", is_llm=True))
 
 #compare_best_to_llm()
