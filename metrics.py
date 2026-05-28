@@ -102,7 +102,6 @@ def handle_user(user):
     else:
         return rr, p1, p3, p5, None, None, None, None, None
 
-
 def evaluate_file(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         records = json.load(f)
@@ -244,6 +243,47 @@ def aggregate_metrics_to_csv(target_folder, output_filename="results.csv"):
             
         print(f"Successfully wrote {len(all_rows)} rows to {output_filename}")
 
+
+def aggregate_metrics_to_csv_for_llm(target_folder, output_filename="results.csv"):
+    # 1. Gather all files (filtering for .txt or .json as needed)
+    files = [f for f in os.listdir(target_folder) if os.path.isfile(os.path.join(target_folder, f))]
+    
+    if not files:
+        print("No files found in the specified directory.")
+        return
+
+    all_files = [f for f in os.listdir(target_folder) if f.endswith('.json')]
+
+    all_rows = []
+    
+    # 2. Process each file
+    for filename in tqdm(all_files):
+        file_path = os.path.join(target_folder, filename)
+        
+        try:
+            # Get the metrics dict from your existing function
+            metrics = calculate_metrics(file_path, is_llm=True)
+            
+            # Insert the filename at the start of the dictionary
+            # This ensures the row label is included
+            row = {"Model": file_name_to_column_entry(file_name=filename)}
+            row.update(metrics)
+            all_rows.append(row)
+        except Exception as e:
+            print(f"Skipping {filename} due to error: {e}")
+
+    # 3. Define headers based on the first result
+    if all_rows:
+        headers = all_rows[0].keys()
+
+        out_file_path = os.path.join(target_folder, output_filename)
+        
+        with open(out_file_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writeheader()
+            writer.writerows(all_rows)
+            
+        print(f"Successfully wrote {len(all_rows)} rows to {output_filename}")
 
 def compare_baseline_to_others(target_folder, baseline_filename):
     baseline_path = os.path.join(target_folder, baseline_filename)
@@ -594,9 +634,9 @@ def compare_best_to_llm():
         print(f"Successfully wrote Wilcoxon results to {out_path}")
 
 
+aggregate_metrics_to_csv_for_llm("recommendations/LLM/with_stem_vec")
 
-compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool/for_wilcox", baseline_filename="bilinear_pool_emotion_intensity_empath.json")
-
+#compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool/for_wilcox", baseline_filename="bilinear_pool_emotion_intensity_empath.json")
 
 # aggregate_metrics_to_csv(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/wilcoxon_misc")
 #print(calculate_metrics("recommendations/LLM/with_stem_and_emotion/mistral_user_rankings_results.json", is_llm=True))
