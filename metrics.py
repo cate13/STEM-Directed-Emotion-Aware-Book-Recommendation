@@ -499,6 +499,74 @@ def evaluate_llm_file(llm_path):
     }
 
 
+def compare_easer_2_to_llm(baseline_filename, target_folder):
+    baseline_path = os.path.join(target_folder, baseline_filename)
+    if not os.path.exists(baseline_path):
+        print(f"Baseline file {baseline_filename} not found.")
+        return
+
+    # Get baseline lists
+    baseline_data = evaluate_file(baseline_path)
+
+    all_files = [f for f in os.listdir(target_folder) 
+                 if f.endswith('.json') and f != baseline_filename]
+
+    results_rows = []
+
+    for comp_file in tqdm(all_files):
+        comp_path = os.path.join(target_folder, comp_file)
+        try:
+            comp_data = evaluate_llm_file(comp_path)
+            
+            row = {"Comparison File": file_name_to_column_entry(comp_file)}
+
+            for metric in baseline_data.keys():
+                base_scores = baseline_data[metric]
+                comp_scores = comp_data[metric]
+
+                # 2. ROBUST CLEANING: Remove None AND NaN values
+                # This ensures Spearman NaNs don't break the Wilcoxon test
+                paired_scores = []
+                for b, c in zip(base_scores, comp_scores):
+                    if b is not None and c is not None:
+                        # Check if either is NaN (using math.isnan)
+                        if not (math.isnan(b) or math.isnan(c)):
+                            paired_scores.append((b, c))
+                
+                if len(paired_scores) < 10: # Wilcoxon needs a decent sample size
+                    row[f"{metric}_p_val"] = "Insufficient Data"
+                    continue
+
+                b_clean, c_clean = zip(*paired_scores)
+
+                # Check if every single pair is identical
+                if np.array_equal(b_clean, c_clean):
+                    row[f"{metric}_p_val"] = 1.0
+                else:
+                    # 'greater' tests if baseline > comparison
+                    # zero_method="pratt" or "wilcox" handles ties
+                    _, p_val = wilcoxon(b_clean, c_clean, alternative='greater')
+                    # 2. Use scientific notation or more decimals if you don't want 0.0
+                    row[f"{metric}_p_val"] = "{:.2e}".format(p_val) if p_val < 0.0001 else round(p_val, 5)
+
+            results_rows.append(row)
+
+        except Exception as e:
+            print(f"Skipping {comp_file} due to error: {e}")
+
+    # Write results
+    if results_rows:
+        output_file_name = f"Wilcoxon Compared to {file_name_to_column_entry(baseline_filename)}.csv"
+        out_path = os.path.join(target_folder, output_file_name)
+        headers = results_rows[0].keys()
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writeheader()
+            writer.writerows(results_rows)
+        print(f"Successfully wrote Wilcoxon results to {output_file_name}")
+
+
+
 def compare_baseline_to_others_llm():
     llm = "mistral"
     baseline_path = f"recommendations/1_plus_stem_books/with_stem_vec/user_rankings_result_{llm}.json"
@@ -634,7 +702,7 @@ def compare_best_to_llm():
         print(f"Successfully wrote Wilcoxon results to {out_path}")
 
 
-aggregate_metrics_to_csv_for_llm("recommendations/LLM/with_stem_vec")
+# aggregate_metrics_to_csv_for_llm("recommendations/LLM/with_stem_vec")
 
 #compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/bilinear_pool/for_wilcox", baseline_filename="bilinear_pool_emotion_intensity_empath.json")
 
@@ -642,3 +710,5 @@ aggregate_metrics_to_csv_for_llm("recommendations/LLM/with_stem_vec")
 #print(calculate_metrics("recommendations/LLM/with_stem_and_emotion/mistral_user_rankings_results.json", is_llm=True))
 
 #compare_best_to_llm()
+
+compare_easer_2_to_llm("bilinear_pool_emotion_intensity_empath.json", "recommendations/LLM/with_stem_and_emotion")
