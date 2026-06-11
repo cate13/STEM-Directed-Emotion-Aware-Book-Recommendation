@@ -107,6 +107,8 @@ def saveGraphDictVector(results, title, folder):
     os.makedirs(folder, exist_ok=True)
 
     r = dict(results)
+    if "bias" in r:
+        r.pop("bias")
 
     n = len(r)
 
