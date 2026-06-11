@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from typing import List, Union
 import tqdm
+import re
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -75,11 +76,94 @@ def graphDictVector(results, title):
     plt.title(title)
     plt.show()
 
+def graphNDarray(results, title):
+    arr = np.asarray(results)
+
+    plt.figure(figsize=(10, 6))
+    plt.barh(range(len(arr)), arr, align='center')
+    plt.yticks(range(len(arr)), [str(i) for i in range(len(arr))])
+
+    plt.title(title)
+    plt.xlabel("Value")
+    plt.ylabel("Index")
+    plt.tight_layout()
+    plt.show()
+
 def graphVector(results, title):
     if isinstance(results, list):
         graphTF_IDF(results, title)
+    elif isinstance(results, np.ndarray):
+        graphNDarray(results, title)
     else:
         graphDictVector(results, title)
+
+def make_filename(title):
+    """Convert title into a safe filename."""
+    filename = re.sub(r'[<>:"/\\|?*]', '_', title)
+    return f"{filename}.png"
+
+
+def saveGraphDictVector(results, title, folder):
+    os.makedirs(folder, exist_ok=True)
+
+    r = dict(results)
+
+    n = len(r)
+
+    # Scale height with number of labels
+    height = max(6, n * 0.35)
+
+    plt.figure(figsize=(12, height))
+    plt.barh(range(n), list(r.values()), align='center')
+    plt.yticks(range(n), list(r.keys()))
+
+    plt.title(title)
+
+    # Give extra room for long labels
+    plt.subplots_adjust(left=0.4)
+
+    filepath = os.path.join(folder, make_filename(title))
+
+    plt.savefig(
+        filepath,
+        bbox_inches="tight",
+        dpi=300
+    )
+    plt.close()
+
+    return filepath
+
+def saveGraphNDarray(results, title, folder):
+    os.makedirs(folder, exist_ok=True)
+
+    arr = np.asarray(results)
+
+    plt.figure(figsize=(10, 6))
+    plt.barh(range(len(arr)), arr, align='center')
+    plt.yticks(range(len(arr)), [str(i) for i in range(len(arr))])
+
+    plt.title(title)
+    plt.xlabel("Value")
+    plt.ylabel("Index")
+    plt.tight_layout()
+
+    filepath = os.path.join(folder, make_filename(title))
+    plt.savefig(filepath, bbox_inches="tight")
+    plt.close()
+
+    return filepath
+
+def saveGraphVector(results, title, folder):
+    if isinstance(results, np.ndarray):
+        return saveGraphNDarray(results, title, folder)
+    else:
+        return saveGraphDictVector(results, title, folder)
+
+
+
+def concat_with_labels(e_vec, t_vec):
+    if isinstance(e_vec, dict) and isinstance(t_vec, dict):
+        return {**e_vec, **t_vec}
 
 def concat(vec1, vec2):
     # print(type(vec1))
@@ -89,6 +173,47 @@ def concat(vec1, vec2):
     if isinstance(vec2, dict):
         vec2 = list(vec2.values())
     return vec1 + vec2
+
+def combine_using_bilinear_pool_with_label(e_vec, t_vec):
+    if isinstance(e_vec, dict):
+        e_labels = list(e_vec.keys())
+        e_values = list(e_vec.values())
+    else:
+        raise ValueError("e_vec must be a dict")
+
+    if isinstance(t_vec, dict):
+        t_labels = list(t_vec.keys())
+        t_values = list(t_vec.values())
+    else:
+        raise ValueError("t_vec must be a dict")
+
+    vec_a = np.append(np.array(e_values), 1.0)
+    vec_b = np.append(np.array(t_values), 1.0)
+
+    outer_product = np.outer(vec_a, vec_b)
+    flattened = outer_product.flatten()
+
+    normalized = np.sign(flattened) * np.sqrt(np.abs(flattened))
+    norm = np.linalg.norm(normalized)
+
+    if norm > 0:
+        final_vector = normalized / norm
+    else:
+        final_vector = normalized
+
+    labels = []
+
+    # Rows corresponding to emotions
+    for e_label in e_labels:
+        for t_label in t_labels:
+            labels.append(f"{e_label}-{t_label}")
+        labels.append(e_label)
+
+    # Final row corresponding to the appended 1.0 in vec_a
+    labels.extend(t_labels)
+    labels.append("bias")
+
+    return dict(zip(labels, final_vector))
 
 def combine_using_bilinear_pool(e_vec, t_vec):
     if isinstance(e_vec, dict):
