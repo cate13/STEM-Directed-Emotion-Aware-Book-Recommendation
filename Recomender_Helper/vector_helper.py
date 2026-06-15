@@ -110,6 +110,22 @@ def saveGraphDictVector(results, title, folder):
     if "bias" in r:
         r.pop("bias")
 
+    rename_mapping = {
+        "mathematics": "Math",
+        "engineering": "Engg",
+        "technology": "Tech",
+        "science": "Sci"
+    }
+
+    cleaned_r = {}
+    for k, v in r.items():
+        new_key = k
+        for old_sub, new_sub in rename_mapping.items():
+            new_key = new_key.replace(old_sub, new_sub)
+        cleaned_r[new_key] = v
+    
+    r = cleaned_r
+
     n = len(r)
 
     # Scale height with number of labels

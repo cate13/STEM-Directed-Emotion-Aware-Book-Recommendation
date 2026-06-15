@@ -711,4 +711,6 @@ def compare_best_to_llm():
 
 #compare_best_to_llm()
 
-compare_easer_2_to_llm("bilinear_pool_emotion_intensity_empath.json", "recommendations/LLM/with_stem_and_emotion")
+#compare_easer_2_to_llm("bilinear_pool_emotion_intensity_empath.json", "recommendations/LLM/with_stem_and_emotion")
+
+compare_baseline_to_others(target_folder="recommendations/12-25_age_10_plus_highly_rated_books/EASER1_EASER2", baseline_filename="bilinear_pool_emotion_intensity_empath.json")
