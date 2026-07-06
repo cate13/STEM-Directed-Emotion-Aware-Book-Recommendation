@@ -11,7 +11,7 @@ from itertools import combinations
 
 # ---- Paths ----
 
-TEST_DATA_FILE = "user_eval_sets/users_12_25_1_plus_STEM_books_and_10_plus_high_rated_split_60_40.json"
+TEST_DATA_FILE = "user_eval_sets/test_users_no_stem.json"
 #TEST_DATA_FILE = "user_eval_sets/test.json"
 STEM_BOOKS_FILE = "processed_data/stem_isbns_from_topic.txt"
 
@@ -164,7 +164,36 @@ def recommend_multi_topic(test_data_file, output_folder, emotion_type = "emotion
     output_file_path = f"{output_folder}/{emotion_type}_with_weight_{emotion_weight}_{topic_string}_with_weight_{topic_weight}.json"
     with open(output_file_path, 'w') as f:
         json.dump(data, f, indent=4)
+ 
+
+def recommend_with_personalized_emotion(test_data_file, output_folder = "recommendations/no_stem_test"):
+    with open(test_data_file, 'r') as file:
+        data = json.load(file)
     
+    for item in tqdm(data):
+        profile_books = item['candidate_profile']
+        emotion_vectors = []
+        for book in profile_books:
+            isbn = book['isbn']
+            try:
+                emotion_vectors.append(get_vector_by_isbn(isbn, "emotion"))
+            except Exception as e:
+                print(e)
+        if len(emotion_vectors) == 0:
+            raise Exception(f"Missing all profile books")
+        
+        emotion_profile = average_vectors(emotion_vectors)
+
+        recomendation_books = item['recommendation_list']
+        for book in recomendation_books:
+            book_vec = get_vector_by_isbn(book['isbn'], "emotion")
+            cos = cosine_similarity(emotion_profile, book_vec)
+            book['cos'] = cos
+
+    output_file_name = f"{output_folder}/with_personalized.json"
+    with open(output_file_name, 'w') as f:
+        json.dump(data, f, indent=4)
+
 
 def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0, matrix_combo = False, reduce = False):
     general_stem_topic_vec = general_stem_topic_vec_maker(topic_type)
@@ -261,4 +290,6 @@ def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "tf_idf", 1.0, 1.0)
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "empath", 1.0, 1.0)
 
-run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo_reduce")
+#run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo_reduce")
+
+recommend_with_personalized_emotion(TEST_DATA_FILE)
