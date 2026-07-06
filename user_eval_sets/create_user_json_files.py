@@ -6,7 +6,7 @@ import random
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CURATED_USERS_PATH = os.path.join(
-    BASE_DIR, "processed_data", "curated_users_20-25.jsonl"
+    BASE_DIR, "processed_data", "curated_users_12-19.jsonl"
 )
 
 STEM_BOOKS_PATH_1 = os.path.join(
@@ -44,6 +44,33 @@ def load_stem_isbns(stem_paths):
                 stem_isbns.add(line.strip())
 
     return stem_isbns
+
+def get_users_with_10_plus_highly_rated_books():
+    matching_users = []
+
+    with open(CURATED_USERS_PATH, 'r', encoding='utf-8') as f:
+        for line in f:
+            if not line.strip():
+                continue
+            
+            user_data = json.loads(line)
+            book_list = user_data.get('book_list', [])
+
+            age = user_data.get("age")
+            print(age)
+
+            if age < 12 or age >= 19:
+                continue
+            
+            highly_rated = 0
+            for book in book_list:
+                isbn = book.get('isbn')
+                if book.get('rating', 0) >= 7:
+                    highly_rated += 1
+            if highly_rated >= 10:
+                matching_users.append(user_data)
+
+    return matching_users
 
 def filter_users(file_path, target_isbns, description_isbns, x, y = 4):
     """
@@ -301,6 +328,21 @@ def filter_for_x_high_rated_books(starting_users, stem_books, book_count):
                  
     return matching_users   
 
+def get_for_test():
+    users = get_users_with_10_plus_highly_rated_books()
+    print(len(users))
+
+    formatted_users = format_matching_users(users, [])
+
+    out_file_path = os.path.join(
+        BASE_DIR, "user_eval_sets", "test_users_no_stem.json"
+    )
+
+    with open(out_file_path, 'w', encoding='utf-8') as f:
+        json.dump(formatted_users, f, indent=4, ensure_ascii=False)
+        
+    print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
+
 def get_60_40_split(highly_rated_book_count = 6):
     stem_isbns = load_stem_isbns([STEM_BOOKS_PATH_1, STEM_BOOKS_PATH_2, STEM_BOOKS_PATH_3])
     users = get_users_with_at_least_1_STEM_book(stem_isbns)
@@ -358,4 +400,4 @@ def get_4_plus_user_list():
         
     print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
 
-get_60_40_split(highly_rated_book_count=10)
+get_for_test()
