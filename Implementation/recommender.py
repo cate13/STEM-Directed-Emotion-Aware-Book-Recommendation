@@ -261,4 +261,4 @@ def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "tf_idf", 1.0, 1.0)
     recommend(TEST_DATA_FILE, output_file, "emotion_intensity", "empath", 1.0, 1.0)
 
-run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo_reduce")
+# run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo_reduce")
