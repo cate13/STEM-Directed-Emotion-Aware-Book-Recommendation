@@ -1,0 +1,458 @@
+====================================================================================================
+USER 22521
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Mostly Harmless by Douglas Adams (ground truth rating=8, cos=0.9719)
+2. The Hitchhiker's Guide to the Galaxy by Douglas Adams (ground truth rating=10, cos=0.9718)
+3. The Devil Wears Prada : A Novel by LAUREN WEISBERGER (ground truth rating=8, cos=0.9506)
+4. In the Forests of the Night (Laurel Leaf Books) by Amelia Atwater-Rhodes (ground truth rating=6, cos=0.9459)
+5. So Long, and Thanks for All the Fish by DOUGLAS ADAMS (ground truth rating=8, cos=0.9420)
+6. Ship of Ghosts (Farscape) by David Bischoff (ground truth rating=6, cos=0.9385)
+7. Small Gods (Discworld Novels (Paperback)) by Terry Pratchett (ground truth rating=9, cos=0.9340)
+8. Equal Rites (Discworld Novels (Paperback)) by Terry Pratchett (ground truth rating=6, cos=0.9139)
+9. Farscape: Dark Side of the Sun (Farscape) by Andrew Dymond (ground truth rating=5, cos=0.8969)
+10. The Catcher in the Rye by J.D. Salinger (ground truth rating=2, cos=0.8319)
+11. Farscape: House of Cards (Farscape) by Keith Decandido (ground truth rating=6, cos=0.8142)
+12. Jane Eyre (Puffin Classics) by Charlotte Bronte (ground truth rating=3, cos=0.8115)
+13. Pride and Prejudice by Jane Austen (ground truth rating=10, cos=0.8108)
+14. Myst: The Book of Ti'ana by Rand Miller (ground truth rating=7, cos=0.8005)
+15. Myst, The: Book of D'Ni by Rand Miller (ground truth rating=4, cos=0.7826)
+16. Shattered Mirror by Amelia Atwater-Rhodes (ground truth rating=5, cos=0.7798)
+17. Fahrenheit 451 by RAY BRADBURY (ground truth rating=10, cos=0.7441)
+18. Pitch Black: A Novel by Frank Lauria (ground truth rating=3, cos=0.6284)
+19. Myst, The: Book of Atrus by Rand Miller (ground truth rating=6, cos=0.4604)
+
+AGE BASED ORDER
+----------------------------------------
+1. The Catcher in the Rye by J.D. Salinger (ground truth rating=2, cos=0.9686)
+2. So Long, and Thanks for All the Fish by DOUGLAS ADAMS (ground truth rating=8, cos=0.9666)
+3. The Hitchhiker's Guide to the Galaxy by Douglas Adams (ground truth rating=10, cos=0.9605)
+4. Pride and Prejudice by Jane Austen (ground truth rating=10, cos=0.9473)
+5. Jane Eyre (Puffin Classics) by Charlotte Bronte (ground truth rating=3, cos=0.9390)
+6. Equal Rites (Discworld Novels (Paperback)) by Terry Pratchett (ground truth rating=6, cos=0.9305)
+7. Small Gods (Discworld Novels (Paperback)) by Terry Pratchett (ground truth rating=9, cos=0.9134)
+8. Mostly Harmless by Douglas Adams (ground truth rating=8, cos=0.8949)
+9. The Devil Wears Prada : A Novel by LAUREN WEISBERGER (ground truth rating=8, cos=0.8627)
+10. Ship of Ghosts (Farscape) by David Bischoff (ground truth rating=6, cos=0.8474)
+11. In the Forests of the Night (Laurel Leaf Books) by Amelia Atwater-Rhodes (ground truth rating=6, cos=0.8344)
+12. Myst, The: Book of D'Ni by Rand Miller (ground truth rating=4, cos=0.8061)
+13. Farscape: House of Cards (Farscape) by Keith Decandido (ground truth rating=6, cos=0.8036)
+14. Farscape: Dark Side of the Sun (Farscape) by Andrew Dymond (ground truth rating=5, cos=0.7984)
+15. Myst: The Book of Ti'ana by Rand Miller (ground truth rating=7, cos=0.7581)
+16. Myst, The: Book of Atrus by Rand Miller (ground truth rating=6, cos=0.7356)
+17. Fahrenheit 451 by RAY BRADBURY (ground truth rating=10, cos=0.6403)
+18. Shattered Mirror by Amelia Atwater-Rhodes (ground truth rating=5, cos=0.5528)
+19. Pitch Black: A Novel by Frank Lauria (ground truth rating=3, cos=0.4883)
+
+
+====================================================================================================
+USER 108143
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Thinner by Stephen King (ground truth rating=9, cos=0.9506)
+2. The Testament by John Grisham (ground truth rating=9, cos=0.9123)
+3. Slaughterhouse Five or the Children's Crusade: A Duty Dance With Death by Kurt Vonnegut (ground truth rating=7, cos=0.8998)
+4. The Summons by John Grisham (ground truth rating=10, cos=0.8585)
+5. The Partner by John Grisham (ground truth rating=6, cos=0.7271)
+
+AGE BASED ORDER
+----------------------------------------
+1. The Partner by John Grisham (ground truth rating=6, cos=0.9666)
+2. Slaughterhouse Five or the Children's Crusade: A Duty Dance With Death by Kurt Vonnegut (ground truth rating=7, cos=0.9555)
+3. The Summons by John Grisham (ground truth rating=10, cos=0.9145)
+4. The Testament by John Grisham (ground truth rating=9, cos=0.8372)
+5. Thinner by Stephen King (ground truth rating=9, cos=0.7173)
+
+
+====================================================================================================
+USER 48268
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. The Reader by Bernhard Schlink (ground truth rating=8, cos=0.9588)
+2. Murder Most Rare: The Female Serial Killer by Michael D. Kelleher (ground truth rating=10, cos=0.9406)
+3. When She Was Bad: How and Why Women Get Away With Murder by Patricia Pearson (ground truth rating=10, cos=0.8876)
+4. Bridget Jones's Diary by Helen Fielding (ground truth rating=6, cos=0.8673)
+5. The Notebook by Nicholas Sparks (ground truth rating=5, cos=0.8428)
+6. Fuzzy Logic Get Fuzzy 2 by Darby Conley (ground truth rating=10, cos=0.8264)
+7. The Color Purple by Alice Walker (ground truth rating=10, cos=0.4187)
+
+AGE BASED ORDER
+----------------------------------------
+1. Bridget Jones's Diary by Helen Fielding (ground truth rating=6, cos=0.9809)
+2. The Notebook by Nicholas Sparks (ground truth rating=5, cos=0.9766)
+3. The Reader by Bernhard Schlink (ground truth rating=8, cos=0.9526)
+4. Murder Most Rare: The Female Serial Killer by Michael D. Kelleher (ground truth rating=10, cos=0.7566)
+5. When She Was Bad: How and Why Women Get Away With Murder by Patricia Pearson (ground truth rating=10, cos=0.6617)
+6. Fuzzy Logic Get Fuzzy 2 by Darby Conley (ground truth rating=10, cos=0.5201)
+7. The Color Purple by Alice Walker (ground truth rating=10, cos=0.3543)
+
+
+====================================================================================================
+USER 259057
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Dude, Where's My Country? by Michael Moore (ground truth rating=9, cos=0.9074)
+2. Quidditch Through the Ages by J. K. Rowling (ground truth rating=6, cos=0.9000)
+3. Bridget Jones's Diary: Music from the Motion Picture by Various (ground truth rating=5, cos=0.8618)
+4. Charlie y la fÃ¡brica de chocolate by Roald Dahl (ground truth rating=8, cos=0.8527)
+5. La tregua (Biblioteca Mario Benedetti) by MARIO BENEDETTI (ground truth rating=8, cos=0.8095)
+6. El Silencio Del Asesino by Concha Lopez Narvaez (ground truth rating=6, cos=0.7371)
+7. The Story of the Seagull and the Cat Who Taught Her To Fly by Luis Sepulveda (ground truth rating=8, cos=0.4482)
+
+AGE BASED ORDER
+----------------------------------------
+1. Bridget Jones's Diary: Music from the Motion Picture by Various (ground truth rating=5, cos=0.9717)
+2. El Silencio Del Asesino by Concha Lopez Narvaez (ground truth rating=6, cos=0.9192)
+3. La tregua (Biblioteca Mario Benedetti) by MARIO BENEDETTI (ground truth rating=8, cos=0.8454)
+4. Charlie y la fÃ¡brica de chocolate by Roald Dahl (ground truth rating=8, cos=0.7918)
+5. Dude, Where's My Country? by Michael Moore (ground truth rating=9, cos=0.7844)
+6. The Story of the Seagull and the Cat Who Taught Her To Fly by Luis Sepulveda (ground truth rating=8, cos=0.6945)
+7. Quidditch Through the Ages by J. K. Rowling (ground truth rating=6, cos=0.6569)
+
+
+====================================================================================================
+USER 146386
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. No Greater Love by Danielle Steel (ground truth rating=10, cos=0.9757)
+2. What Matters Most by Winnie Griggs (ground truth rating=5, cos=0.9733)
+3. River's End by Nora Roberts (ground truth rating=8, cos=0.9558)
+4. Yesterday's Roses by Lynda Trent (ground truth rating=3, cos=0.9495)
+5. West Wind by Linda Winstead (ground truth rating=8, cos=0.9394)
+6. You Belong To Me by Mary Higgins Clark (ground truth rating=9, cos=0.9151)
+7. Sunlight Moonlight (Paranormal Romance) by Amanda Ashley (ground truth rating=10, cos=0.9138)
+8. 1st to Die: A Novel by James Patterson (ground truth rating=8, cos=0.9088)
+9. Wolf Shadow (Signet Historical Romance) by Madeline Baker (ground truth rating=10, cos=0.8930)
+10. A Matter of Trust (Zebra Bouquet Romances, No 32) by Deb Stover (ground truth rating=8, cos=0.8905)
+11. Don't Give It Away! : A Workbook of Self-Awareness and Self-Affirmations for Young Women by Iyanla Vanzant (ground truth rating=10, cos=0.8815)
+12. Intimacies by Lisa Jackson (ground truth rating=8, cos=0.8409)
+13. Orphan by Stella Cameron (ground truth rating=9, cos=0.8394)
+14. Tell Me Why by Stella Cameron (ground truth rating=5, cos=0.8314)
+15. The Villa by Nora Roberts (ground truth rating=10, cos=0.8244)
+16. Chase the Wind by Madeline Baker (ground truth rating=8, cos=0.7840)
+17. Leap of Faith by Danielle Steel (ground truth rating=8, cos=0.7623)
+18. Considering Kate (The Stanislaskis) (Silhouette Special Edition) by Nora Roberts (ground truth rating=7, cos=0.6647)
+19. About Adam by Stella Cameron (ground truth rating=8, cos=0.0000)
+20. Carolina Moon by Nora Roberts (ground truth rating=6, cos=0.0000)
+
+AGE BASED ORDER
+----------------------------------------
+1. Yesterday's Roses by Lynda Trent (ground truth rating=3, cos=0.9782)
+2. What Matters Most by Winnie Griggs (ground truth rating=5, cos=0.9721)
+3. No Greater Love by Danielle Steel (ground truth rating=10, cos=0.9595)
+4. River's End by Nora Roberts (ground truth rating=8, cos=0.9436)
+5. A Matter of Trust (Zebra Bouquet Romances, No 32) by Deb Stover (ground truth rating=8, cos=0.9198)
+6. Wolf Shadow (Signet Historical Romance) by Madeline Baker (ground truth rating=10, cos=0.9158)
+7. Don't Give It Away! : A Workbook of Self-Awareness and Self-Affirmations for Young Women by Iyanla Vanzant (ground truth rating=10, cos=0.9120)
+8. West Wind by Linda Winstead (ground truth rating=8, cos=0.8977)
+9. The Villa by Nora Roberts (ground truth rating=10, cos=0.8949)
+10. Orphan by Stella Cameron (ground truth rating=9, cos=0.8934)
+11. Sunlight Moonlight (Paranormal Romance) by Amanda Ashley (ground truth rating=10, cos=0.8810)
+12. 1st to Die: A Novel by James Patterson (ground truth rating=8, cos=0.8348)
+13. You Belong To Me by Mary Higgins Clark (ground truth rating=9, cos=0.8239)
+14. Considering Kate (The Stanislaskis) (Silhouette Special Edition) by Nora Roberts (ground truth rating=7, cos=0.7995)
+15. Tell Me Why by Stella Cameron (ground truth rating=5, cos=0.7911)
+16. Intimacies by Lisa Jackson (ground truth rating=8, cos=0.7814)
+17. Leap of Faith by Danielle Steel (ground truth rating=8, cos=0.7511)
+18. Chase the Wind by Madeline Baker (ground truth rating=8, cos=0.6935)
+19. About Adam by Stella Cameron (ground truth rating=8, cos=0.0000)
+20. Carolina Moon by Nora Roberts (ground truth rating=6, cos=0.0000)
+
+
+====================================================================================================
+USER 85367
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Bored of the Rings: A Parody of J.R.R. Tolkien's the Lord of the Rings by Harvard Lampoon Staff (ground truth rating=10, cos=0.9570)
+2. Chicken Soup for the Teenage Soul Letters - Letters of Life, Love and Learning (Chicken Soup for the Teenage Soul) by Jack Canfield (ground truth rating=4, cos=0.9365)
+3. Harry Potter and the Order of the Phoenix (Book 5) by J. K. Rowling (ground truth rating=10, cos=0.9267)
+4. X-Men: A Novelization by Kristine Kathryn Rusch (ground truth rating=4, cos=0.8719)
+5. \Ghosts: Washington Revisited\" (The Ghostlore of the Nation's Capital)" by John Alexander (ground truth rating=5, cos=0.8274)
+6. The Witches by Roald Dahl (ground truth rating=10, cos=0.8178)
+7. Falling Up by Shel Silverstein (ground truth rating=10, cos=0.8152)
+8. Harry Potter and the Chamber of Secrets (Book 2) by J. K. Rowling (ground truth rating=10, cos=0.8126)
+9. Harry Potter and the Goblet of Fire (Book 4) by J. K. Rowling (ground truth rating=10, cos=0.7980)
+10. Chicken Soup for the Kid's Soul : 101 Stories of Courage, Hope and Laughter (Chicken Soup for the Soul (Paperback Health Communications)) by Jack Canfield (ground truth rating=2, cos=0.7502)
+11. I Dream of You by Judi McCoy (ground truth rating=9, cos=0.6752)
+12. Hobbit Companion by David Day (ground truth rating=10, cos=0.6746)
+13. Frodo's Quest: Living the Myth in the Lord of the Rings by Robert S. Ellwood (ground truth rating=5, cos=0.6713)
+
+AGE BASED ORDER
+----------------------------------------
+1. Chicken Soup for the Teenage Soul Letters - Letters of Life, Love and Learning (Chicken Soup for the Teenage Soul) by Jack Canfield (ground truth rating=4, cos=0.9551)
+2. Harry Potter and the Order of the Phoenix (Book 5) by J. K. Rowling (ground truth rating=10, cos=0.9497)
+3. Bored of the Rings: A Parody of J.R.R. Tolkien's the Lord of the Rings by Harvard Lampoon Staff (ground truth rating=10, cos=0.9267)
+4. X-Men: A Novelization by Kristine Kathryn Rusch (ground truth rating=4, cos=0.8729)
+5. \Ghosts: Washington Revisited\" (The Ghostlore of the Nation's Capital)" by John Alexander (ground truth rating=5, cos=0.8211)
+6. The Witches by Roald Dahl (ground truth rating=10, cos=0.8164)
+7. Falling Up by Shel Silverstein (ground truth rating=10, cos=0.7787)
+8. Harry Potter and the Chamber of Secrets (Book 2) by J. K. Rowling (ground truth rating=10, cos=0.7769)
+9. Chicken Soup for the Kid's Soul : 101 Stories of Courage, Hope and Laughter (Chicken Soup for the Soul (Paperback Health Communications)) by Jack Canfield (ground truth rating=2, cos=0.7714)
+10. Harry Potter and the Goblet of Fire (Book 4) by J. K. Rowling (ground truth rating=10, cos=0.7363)
+11. Frodo's Quest: Living the Myth in the Lord of the Rings by Robert S. Ellwood (ground truth rating=5, cos=0.6788)
+12. Hobbit Companion by David Day (ground truth rating=10, cos=0.6117)
+13. I Dream of You by Judi McCoy (ground truth rating=9, cos=0.5711)
+
+
+====================================================================================================
+USER 264525
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Hilary and Jackie by Hilary Du Pre (ground truth rating=10, cos=0.9919)
+2. Chicken Soup for the Teenage Soul Journal (Chicken Soup for the Soul Series) by Jack Canfield (ground truth rating=3, cos=0.9831)
+3. The Book of My Healing : A Journal of Recovery in 150 Questions by Peggy Schmidt (ground truth rating=6, cos=0.9825)
+4. Broken Chords by Barbara Snow Gilbert (ground truth rating=6, cos=0.9791)
+5. Shadows of Yesterday by Sandra Brown (ground truth rating=5, cos=0.9738)
+6. A Walk to Remember by Nicholas Sparks (ground truth rating=10, cos=0.9735)
+7. It's My Life! A Workout for Your Mind by Tian Dayton (ground truth rating=1, cos=0.9678)
+8. Philosophy for Dummies by Tom  Morris (ground truth rating=8, cos=0.9598)
+9. All I Really Need to Know by ROBERT FULGHUM (ground truth rating=10, cos=0.9550)
+10. Pride and Prejudice by Jane Austen (ground truth rating=10, cos=0.9540)
+11. Take It From Me: Life's a Struggle But You Can Win by Erin  Brockovich (ground truth rating=10, cos=0.9361)
+12. Are You There God?  It's Me, Margaret by Judy Blume (ground truth rating=5, cos=0.9329)
+13. Sisterhood of the Traveling Pants by ANN BRASHARES (ground truth rating=6, cos=0.9324)
+14. The Prayer of Jabez for Teens (The Breakthrough Series) by Bruce Wilkinson (ground truth rating=9, cos=0.9246)
+15. Unknown ISBN 0340767405 by Unknown Author (ground truth rating=7, cos=0.9221)
+16. Precious Moments Bible For Catholics All Your Precious Moments Favorites! by Not Applicable (Na ) (ground truth rating=10, cos=0.9190)
+17. Chicken Soup for the Teenage Soul II (Chicken Soup for the Soul Series) by Jack Canfield (ground truth rating=9, cos=0.9159)
+18. The Way of the Saints: Prayers, Practices and Meditations by Thomas Dale Cowan (ground truth rating=10, cos=0.9157)
+19. Collectors Value Guide Ty Beanie Babies: Collector Handbook and Price Guide Winter 1999 (Collector's Value Guide Ty Beanie Babies) by CheckerBee Publishing (ground truth rating=10, cos=0.9138)
+20. Heroes Who Changed the World by Ben Alex (ground truth rating=6, cos=0.9100)
+21. A Guide to the Saints by Kristin E. White (ground truth rating=9, cos=0.9100)
+22. Enthusiasm Makes the Difference by NORMAN VINCEN PEALE (ground truth rating=5, cos=0.9068)
+23. Anne Frank and Me by Cherie Bennett (ground truth rating=10, cos=0.9024)
+24. The Rich Man's Table by Scott Spencer (ground truth rating=1, cos=0.8994)
+25. Things Fall Apart : A Novel by CHINUA ACHEBE (ground truth rating=2, cos=0.8973)
+26. High Hopes for Addy (American Girls Short Stories) by Connie Rose Porter (ground truth rating=10, cos=0.8951)
+27. Felicity's New Sister (American Girls Short Stories) by Valerie Tripp (ground truth rating=10, cos=0.8951)
+28. Be Your Own Best Friend by Randy Petersen (ground truth rating=6, cos=0.8928)
+29. Posh and Becks by Andrew Morton (ground truth rating=4, cos=0.8832)
+30. Chocolate for A Teen's Heart : Unforgettable Stories for Young Women About Love, Hope, and Happiness (Chocolate Series) by Kay Allenbaugh (ground truth rating=7, cos=0.8818)
+31. The Promised Land (Modern Library Classics) by Mary Antin (ground truth rating=4, cos=0.8813)
+32. The Celestine Prophecy : A Pocket Guide to the Nine Insights by James Redfield (ground truth rating=6, cos=0.8689)
+33. Plain Jane by Fern Michaels (ground truth rating=4, cos=0.8686)
+34. Timelines of World History by Susan Imhoff (ground truth rating=10, cos=0.8633)
+35. Holy Bible, New Living Translation: Metal, Silver (Heavy Metal Bible Series) by Tyndale (ground truth rating=10, cos=0.8596)
+36. Chinese Cinderella: The True Story of an Unwanted Daughter (Laurel-Leaf Books) by Adeline Yen Mah (ground truth rating=5, cos=0.8564)
+37. Identifying Barbie Dolls: The New Compact Study Guide and Identifier (Identifying Guide Series) by Janine Fennick (ground truth rating=3, cos=0.8476)
+38. Unknown ISBN 084235462X by Unknown Author (ground truth rating=10, cos=0.8433)
+39. Samantha's Winter Party (The American Girls Collection) by Valerie Tripp (ground truth rating=10, cos=0.8348)
+40. A Little Princess (Aladdin Classics) by Frances Hodgson Burnett (ground truth rating=10, cos=0.8342)
+41. Pets, Part of Family: The Total Care Guide for All the Pets in Your Life (Pets: Part of the Family) by Gary Burghoff (ground truth rating=10, cos=0.8279)
+42. Hipsterz Blank: There's Nothing Blank About Me (Hipsterz Journals) by Not Applicable (Na ) (ground truth rating=10, cos=0.8240)
+43. Molly Takes Flight (American Girls Short Stories) by Valerie Tripp (ground truth rating=10, cos=0.8176)
+44. Tell Me Your Dreams by Sidney Sheldon (ground truth rating=1, cos=0.8127)
+45. Sat the Classic Course (Kaplan Sourcebooks) by Stanley H. Kaplan (ground truth rating=10, cos=0.7996)
+46. Unknown ISBN 0747553408 by Unknown Author (ground truth rating=10, cos=0.7878)
+47. Learning to Fly by Victoria Beckham (ground truth rating=10, cos=0.7648)
+48. Chemistry (Barron's E Z 101 Study Keys) by Edward Kostiner (ground truth rating=8, cos=0.7610)
+49. Star Wars: Episode II, Attack of the Clones (Jr. Novelization) by Patricia C. Wrede (ground truth rating=1, cos=0.7319)
+50. Samantha Saves the Day: A Summer Story (American Girls Collection) by Valerie Tripp (ground truth rating=10, cos=0.7311)
+51. Rachel Smiles : The Spiritual Legacy of Columbine Martyr Rachel Scott by Darrell Scott (ground truth rating=10, cos=0.7204)
+52. Meet Samantha: An American Girl (American Girls Collection (Paper)) by Susan S. Adler (ground truth rating=10, cos=0.7181)
+53. Welcome to Samantha's World-1904: Growing Up in America's New Century (American Girls Collection (Cloth)) by Catherine Gourley (ground truth rating=10, cos=0.7023)
+54. BEN THERE DONE THAT SABRINA THE TEENAGE WITCH 6 (Sabrina The Teenage Witch) by Joseph Locke (ground truth rating=5, cos=0.7004)
+55. A Child Called \It\": One Child's Courage to Survive" by Dave Pelzer (ground truth rating=5, cos=0.6886)
+56. Silas Marner (Signet Classics (Paperback)) by George Eliot (ground truth rating=10, cos=0.6716)
+57. The Complete Works of William Shakespeare by William Shakespeare (ground truth rating=10, cos=0.5689)
+58. Pocket Book of Short Stories by M. Edmund Speare (ground truth rating=10, cos=0.5161)
+59. Touch Points for Students: God's Answers for Your Daily Needs (Touchpoints) by Not Applicable (Na ) (ground truth rating=9, cos=0.2744)
+60. Sense and Sensibility by Jane Austen (ground truth rating=10, cos=0.0000)
+
+AGE BASED ORDER
+----------------------------------------
+1. It's My Life! A Workout for Your Mind by Tian Dayton (ground truth rating=1, cos=0.9825)
+2. Chicken Soup for the Teenage Soul Journal (Chicken Soup for the Soul Series) by Jack Canfield (ground truth rating=3, cos=0.9822)
+3. Hilary and Jackie by Hilary Du Pre (ground truth rating=10, cos=0.9809)
+4. Shadows of Yesterday by Sandra Brown (ground truth rating=5, cos=0.9794)
+5. Broken Chords by Barbara Snow Gilbert (ground truth rating=6, cos=0.9737)
+6. Anne Frank and Me by Cherie Bennett (ground truth rating=10, cos=0.9599)
+7. The Book of My Healing : A Journal of Recovery in 150 Questions by Peggy Schmidt (ground truth rating=6, cos=0.9586)
+8. A Walk to Remember by Nicholas Sparks (ground truth rating=10, cos=0.9422)
+9. Philosophy for Dummies by Tom  Morris (ground truth rating=8, cos=0.9417)
+10. Things Fall Apart : A Novel by CHINUA ACHEBE (ground truth rating=2, cos=0.9414)
+11. Are You There God?  It's Me, Margaret by Judy Blume (ground truth rating=5, cos=0.9325)
+12. Pride and Prejudice by Jane Austen (ground truth rating=10, cos=0.9231)
+13. The Rich Man's Table by Scott Spencer (ground truth rating=1, cos=0.9189)
+14. All I Really Need to Know by ROBERT FULGHUM (ground truth rating=10, cos=0.9102)
+15. Collectors Value Guide Ty Beanie Babies: Collector Handbook and Price Guide Winter 1999 (Collector's Value Guide Ty Beanie Babies) by CheckerBee Publishing (ground truth rating=10, cos=0.9056)
+16. Take It From Me: Life's a Struggle But You Can Win by Erin  Brockovich (ground truth rating=10, cos=0.8997)
+17. Unknown ISBN 0340767405 by Unknown Author (ground truth rating=7, cos=0.8970)
+18. A Little Princess (Aladdin Classics) by Frances Hodgson Burnett (ground truth rating=10, cos=0.8963)
+19. Chicken Soup for the Teenage Soul II (Chicken Soup for the Soul Series) by Jack Canfield (ground truth rating=9, cos=0.8954)
+20. Plain Jane by Fern Michaels (ground truth rating=4, cos=0.8944)
+21. Sisterhood of the Traveling Pants by ANN BRASHARES (ground truth rating=6, cos=0.8927)
+22. The Prayer of Jabez for Teens (The Breakthrough Series) by Bruce Wilkinson (ground truth rating=9, cos=0.8799)
+23. Chinese Cinderella: The True Story of an Unwanted Daughter (Laurel-Leaf Books) by Adeline Yen Mah (ground truth rating=5, cos=0.8773)
+24. Be Your Own Best Friend by Randy Petersen (ground truth rating=6, cos=0.8764)
+25. Heroes Who Changed the World by Ben Alex (ground truth rating=6, cos=0.8760)
+26. Molly Takes Flight (American Girls Short Stories) by Valerie Tripp (ground truth rating=10, cos=0.8695)
+27. Hipsterz Blank: There's Nothing Blank About Me (Hipsterz Journals) by Not Applicable (Na ) (ground truth rating=10, cos=0.8624)
+28. Precious Moments Bible For Catholics All Your Precious Moments Favorites! by Not Applicable (Na ) (ground truth rating=10, cos=0.8578)
+29. Enthusiasm Makes the Difference by NORMAN VINCEN PEALE (ground truth rating=5, cos=0.8535)
+30. The Way of the Saints: Prayers, Practices and Meditations by Thomas Dale Cowan (ground truth rating=10, cos=0.8481)
+31. Learning to Fly by Victoria Beckham (ground truth rating=10, cos=0.8415)
+32. The Promised Land (Modern Library Classics) by Mary Antin (ground truth rating=4, cos=0.8357)
+33. Tell Me Your Dreams by Sidney Sheldon (ground truth rating=1, cos=0.8343)
+34. A Guide to the Saints by Kristin E. White (ground truth rating=9, cos=0.8325)
+35. Chocolate for A Teen's Heart : Unforgettable Stories for Young Women About Love, Hope, and Happiness (Chocolate Series) by Kay Allenbaugh (ground truth rating=7, cos=0.8319)
+36. Posh and Becks by Andrew Morton (ground truth rating=4, cos=0.8305)
+37. The Celestine Prophecy : A Pocket Guide to the Nine Insights by James Redfield (ground truth rating=6, cos=0.8098)
+38. High Hopes for Addy (American Girls Short Stories) by Connie Rose Porter (ground truth rating=10, cos=0.8097)
+39. Felicity's New Sister (American Girls Short Stories) by Valerie Tripp (ground truth rating=10, cos=0.8097)
+40. Holy Bible, New Living Translation: Metal, Silver (Heavy Metal Bible Series) by Tyndale (ground truth rating=10, cos=0.8038)
+41. Unknown ISBN 0747553408 by Unknown Author (ground truth rating=10, cos=0.8030)
+42. Unknown ISBN 084235462X by Unknown Author (ground truth rating=10, cos=0.7727)
+43. Timelines of World History by Susan Imhoff (ground truth rating=10, cos=0.7714)
+44. Pets, Part of Family: The Total Care Guide for All the Pets in Your Life (Pets: Part of the Family) by Gary Burghoff (ground truth rating=10, cos=0.7687)
+45. Samantha's Winter Party (The American Girls Collection) by Valerie Tripp (ground truth rating=10, cos=0.7684)
+46. Identifying Barbie Dolls: The New Compact Study Guide and Identifier (Identifying Guide Series) by Janine Fennick (ground truth rating=3, cos=0.7658)
+47. Samantha Saves the Day: A Summer Story (American Girls Collection) by Valerie Tripp (ground truth rating=10, cos=0.7647)
+48. Silas Marner (Signet Classics (Paperback)) by George Eliot (ground truth rating=10, cos=0.7522)
+49. Chemistry (Barron's E Z 101 Study Keys) by Edward Kostiner (ground truth rating=8, cos=0.7389)
+50. Sat the Classic Course (Kaplan Sourcebooks) by Stanley H. Kaplan (ground truth rating=10, cos=0.7201)
+51. Rachel Smiles : The Spiritual Legacy of Columbine Martyr Rachel Scott by Darrell Scott (ground truth rating=10, cos=0.6968)
+52. Star Wars: Episode II, Attack of the Clones (Jr. Novelization) by Patricia C. Wrede (ground truth rating=1, cos=0.6912)
+53. Welcome to Samantha's World-1904: Growing Up in America's New Century (American Girls Collection (Cloth)) by Catherine Gourley (ground truth rating=10, cos=0.6690)
+54. Meet Samantha: An American Girl (American Girls Collection (Paper)) by Susan S. Adler (ground truth rating=10, cos=0.6580)
+55. BEN THERE DONE THAT SABRINA THE TEENAGE WITCH 6 (Sabrina The Teenage Witch) by Joseph Locke (ground truth rating=5, cos=0.6538)
+56. A Child Called \It\": One Child's Courage to Survive" by Dave Pelzer (ground truth rating=5, cos=0.6154)
+57. The Complete Works of William Shakespeare by William Shakespeare (ground truth rating=10, cos=0.5512)
+58. Pocket Book of Short Stories by M. Edmund Speare (ground truth rating=10, cos=0.4832)
+59. Touch Points for Students: God's Answers for Your Daily Needs (Touchpoints) by Not Applicable (Na ) (ground truth rating=9, cos=0.3154)
+60. Sense and Sensibility by Jane Austen (ground truth rating=10, cos=0.0000)
+
+
+====================================================================================================
+USER 125396
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Unknown ISBN 0590032259 by Unknown Author (ground truth rating=10, cos=0.9013)
+2. Titanic Crossing by Barbara Williams (ground truth rating=5, cos=0.8943)
+3. Animal Farm by George Orwell (ground truth rating=7, cos=0.8828)
+4. We Love Harry Potter! by Sharon Moore (ground truth rating=6, cos=0.8636)
+5. The Mask by Madeline Dorr (ground truth rating=6, cos=0.8570)
+6. Harriet the Spy by Louise Fitzhugh (ground truth rating=5, cos=0.6908)
+7. Runaway Ralph by Beverly Cleary (ground truth rating=5, cos=0.6892)
+8. Unknown ISBN 0590619675 by Unknown Author (ground truth rating=10, cos=0.6724)
+9. Juggling for the Complete Klutz by John Cassidy (ground truth rating=7, cos=0.5430)
+10. Castle (The Seventh Tower, Book 2) by Garth Nix (ground truth rating=4, cos=0.4094)
+11. The New Kate (Sleepover Friends, No 26) by Susan Saunders (ground truth rating=7, cos=0.2989)
+
+AGE BASED ORDER
+----------------------------------------
+1. Animal Farm by George Orwell (ground truth rating=7, cos=0.9274)
+2. Titanic Crossing by Barbara Williams (ground truth rating=5, cos=0.9145)
+3. Unknown ISBN 0590032259 by Unknown Author (ground truth rating=10, cos=0.8514)
+4. We Love Harry Potter! by Sharon Moore (ground truth rating=6, cos=0.8508)
+5. The Mask by Madeline Dorr (ground truth rating=6, cos=0.8095)
+6. Runaway Ralph by Beverly Cleary (ground truth rating=5, cos=0.7660)
+7. Harriet the Spy by Louise Fitzhugh (ground truth rating=5, cos=0.7369)
+8. Unknown ISBN 0590619675 by Unknown Author (ground truth rating=10, cos=0.6924)
+9. Juggling for the Complete Klutz by John Cassidy (ground truth rating=7, cos=0.5278)
+10. Castle (The Seventh Tower, Book 2) by Garth Nix (ground truth rating=4, cos=0.5098)
+11. The New Kate (Sleepover Friends, No 26) by Susan Saunders (ground truth rating=7, cos=0.3064)
+
+
+====================================================================================================
+USER 225191
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. The Vampire Lestat (Vampire Chronicles, Book II) by ANNE RICE (ground truth rating=9, cos=0.9123)
+2. The Vision by Dean R. Koontz (ground truth rating=6, cos=0.9050)
+3. ANNE FRANK: DIARY OF A YOUNG GIRL by Anne Frank (ground truth rating=10, cos=0.8515)
+4. A Diet to Die For by Joan Hess (ground truth rating=8, cos=0.7698)
+5. Vampires: A Collection of Original Stories by Jane Yolen (ground truth rating=6, cos=0.7075)
+6. Mrs. Jeffries Weeds the Plot (Victorian Mysteries) by Emily Brightwell (ground truth rating=7, cos=0.6109)
+7. Stories for a Woman's Heart by Alice Gray (ground truth rating=2, cos=0.5815)
+
+AGE BASED ORDER
+----------------------------------------
+1. The Vampire Lestat (Vampire Chronicles, Book II) by ANNE RICE (ground truth rating=9, cos=0.9413)
+2. The Vision by Dean R. Koontz (ground truth rating=6, cos=0.9333)
+3. Stories for a Woman's Heart by Alice Gray (ground truth rating=2, cos=0.8694)
+4. ANNE FRANK: DIARY OF A YOUNG GIRL by Anne Frank (ground truth rating=10, cos=0.7232)
+5. Vampires: A Collection of Original Stories by Jane Yolen (ground truth rating=6, cos=0.6403)
+6. Mrs. Jeffries Weeds the Plot (Victorian Mysteries) by Emily Brightwell (ground truth rating=7, cos=0.5931)
+7. A Diet to Die For by Joan Hess (ground truth rating=8, cos=0.5881)
+
+
+====================================================================================================
+USER 269841
+====================================================================================================
+
+PERSONALIZED ORDER
+----------------------------------------
+1. Hunting for Hidden Gold (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.9386)
+2. Furnace by Muriel Gray (ground truth rating=8, cos=0.9159)
+3. Disappearing Floor (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.9141)
+4. The Tao of Detox by Daniel Reid (ground truth rating=1, cos=0.9004)
+5. Great Airport Mystery (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=4, cos=0.8800)
+6. Shore Road Mystery (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.8597)
+7. Freedomland by Richard Price (ground truth rating=2, cos=0.8579)
+8. Complete Prophecies of Nostradamus (Wordsworth Reference) by Ned Halley (ground truth rating=6, cos=0.8574)
+9. Mystery of Cabin Island (Hardy Boys (Hardcover)) by Franklin W. Dixon (ground truth rating=5, cos=0.8475)
+10. The Hardy Boys: Volumes 1,2,3 by Franklin W. Dixon (ground truth rating=5, cos=0.8355)
+11. The Sky Phantom (Nancy Drew Mystery Stories, No 53) by Carolyn Keene (ground truth rating=5, cos=0.8277)
+12. Hungry Eyes by Barry Hoffman (ground truth rating=7, cos=0.8260)
+13. Unknown ISBN 0753703084 by Unknown Author (ground truth rating=10, cos=0.7912)
+14. Explorer: the Geography of the Earth by Sue Brooks (ground truth rating=10, cos=0.7705)
+15. Nancy Drew Mystery Stories: The Secret of the Old Clock the Hidden Staircase the Bungalow Mystery (Keene, Carolyn. Nancy Drew Mystery Stories.) by Carolyn Keene (ground truth rating=5, cos=0.7368)
+16. How to Do Everything with Windows XP by Curt Simmons (ground truth rating=6, cos=0.7264)
+17. The Mystery of the Ivory Charm (Nancy Drew Mystery Stories, No 13) by Carolyn Keene (ground truth rating=5, cos=0.7171)
+18. Missing Chums (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.7141)
+19. Species II: A Novel by Yvonne Navarro (ground truth rating=6, cos=0.7136)
+20. Contact by Carl Sagan (ground truth rating=8, cos=0.7121)
+21. The Mongoose Man by Nicholas Van Pelt (ground truth rating=6, cos=0.6879)
+22. Password to Larkspur Lane (Nancy Drew Mystery Stories, No 10) by Carolyn Keene (ground truth rating=5, cos=0.4993)
+23. Last Mysteries of the World: The Latest Research into Nature, History, Religion, Science by Reader's Digest (ground truth rating=10, cos=0.3285)
+24. Flags: The New Compact Study Guide and Identifier (Identifying Guide Series) by Eva Devereux (ground truth rating=7, cos=0.0000)
+25. Time to Say Good-Bye by Judith Gould (ground truth rating=5, cos=0.0000)
+
+AGE BASED ORDER
+----------------------------------------
+1. Freedomland by Richard Price (ground truth rating=2, cos=0.9428)
+2. Shore Road Mystery (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.9408)
+3. Hunting for Hidden Gold (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.9291)
+4. The Sky Phantom (Nancy Drew Mystery Stories, No 53) by Carolyn Keene (ground truth rating=5, cos=0.9279)
+5. Furnace by Muriel Gray (ground truth rating=8, cos=0.9205)
+6. Hungry Eyes by Barry Hoffman (ground truth rating=7, cos=0.9032)
+7. Mystery of Cabin Island (Hardy Boys (Hardcover)) by Franklin W. Dixon (ground truth rating=5, cos=0.8861)
+8. The Tao of Detox by Daniel Reid (ground truth rating=1, cos=0.8830)
+9. Disappearing Floor (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.8630)
+10. The Hardy Boys: Volumes 1,2,3 by Franklin W. Dixon (ground truth rating=5, cos=0.8562)
+11. How to Do Everything with Windows XP by Curt Simmons (ground truth rating=6, cos=0.8365)
+12. Complete Prophecies of Nostradamus (Wordsworth Reference) by Ned Halley (ground truth rating=6, cos=0.8263)
+13. Great Airport Mystery (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=4, cos=0.8207)
+14. Unknown ISBN 0753703084 by Unknown Author (ground truth rating=10, cos=0.7745)
+15. Species II: A Novel by Yvonne Navarro (ground truth rating=6, cos=0.7668)
+16. Nancy Drew Mystery Stories: The Secret of the Old Clock the Hidden Staircase the Bungalow Mystery (Keene, Carolyn. Nancy Drew Mystery Stories.) by Carolyn Keene (ground truth rating=5, cos=0.7653)
+17. Missing Chums (Hardy Boys Mystery Stories) by Franklin W. Dixon (ground truth rating=5, cos=0.7569)
+18. The Mongoose Man by Nicholas Van Pelt (ground truth rating=6, cos=0.7320)
+19. The Mystery of the Ivory Charm (Nancy Drew Mystery Stories, No 13) by Carolyn Keene (ground truth rating=5, cos=0.6867)
+20. Explorer: the Geography of the Earth by Sue Brooks (ground truth rating=10, cos=0.6260)
+21. Password to Larkspur Lane (Nancy Drew Mystery Stories, No 10) by Carolyn Keene (ground truth rating=5, cos=0.5493)
+22. Contact by Carl Sagan (ground truth rating=8, cos=0.5063)
+23. Last Mysteries of the World: The Latest Research into Nature, History, Religion, Science by Reader's Digest (ground truth rating=10, cos=0.4589)
+24. Flags: The New Compact Study Guide and Identifier (Identifying Guide Series) by Eva Devereux (ground truth rating=7, cos=0.0000)
+25. Time to Say Good-Bye by Judith Gould (ground truth rating=5, cos=0.0000)
+
+

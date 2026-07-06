@@ -47,13 +47,13 @@ def create_comparison_report(
                 A_users[user_id]["recommendation_list"],
                 key=lambda x: x["cos"],
                 reverse=True,
-            )
+            )[:10]
 
             recs_b = sorted(
                 B_users[user_id]["recommendation_list"],
                 key=lambda x: x["cos"],
                 reverse=True,
-            )
+            )[:10]
 
             out.write("PERSONALIZED ORDER\n")
             out.write("-" * 40 + "\n")
@@ -114,12 +114,14 @@ def get_most_diff():
 
         ndcg_a = ndcg_score(
             [[r["rating"] for r in recs_a]],
-            [[r["cos"] for r in recs_a]]
+            [[r["cos"] for r in recs_a]],
+            k=10
         )
 
         ndcg_b = ndcg_score(
             [[r["rating"] for r in recs_b]],
-            [[r["cos"] for r in recs_b]]
+            [[r["cos"] for r in recs_b]],
+            k=10
         )
 
         diff = ndcg_a - ndcg_b
