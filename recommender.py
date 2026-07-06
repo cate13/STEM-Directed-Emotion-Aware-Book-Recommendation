@@ -5,6 +5,7 @@ from collections import Counter
 from Recomender_Helper.vector_helper import get_vector_by_isbn, cosine_similarity, average_vectors, combine_using_bilinear_pool, concat_with_weight, concat_with_weight_for_multi_topic_vec
 from Vectorizer.EmotionConditionedTopicVectorMaker import EmotionConditionedTopicVectorMaker
 from Vectorizer.CorrelationCombo import combine_vectors
+from get_age_based_vec import get_age_based_emotion_vectors
 import itertools
 import numpy as np
 from itertools import combinations
@@ -195,6 +196,29 @@ def recommend_with_personalized_emotion(test_data_file, output_folder = "recomme
         json.dump(data, f, indent=4)
 
 
+def recommend_with_age_based_emotion(test_data_file, output_folder = "recommendations/no_stem_test"):
+    with open(test_data_file, 'r') as file:
+        data = json.load(file)
+    
+    age_based_emotion_vectors = get_age_based_emotion_vectors()
+
+    for item in tqdm(data):
+        age_of_user = item['age']
+        print(age_of_user)
+        
+        emotion_profile = age_based_emotion_vectors[age_of_user]
+        print(emotion_profile)
+
+        recomendation_books = item['recommendation_list']
+        for book in recomendation_books:
+            book_vec = get_vector_by_isbn(book['isbn'], "emotion")
+            cos = cosine_similarity(emotion_profile, book_vec)
+            book['cos'] = cos
+
+    output_file_name = f"{output_folder}/age_based.json"
+    with open(output_file_name, 'w') as f:
+        json.dump(data, f, indent=4)
+
 def recommend(test_data_file, output_folder, emotion_type = "emotion_intensity", topic_type = "tf_idf", emotion_weight = 1.0, topic_weight = 1.0, matrix_combo = False, reduce = False):
     general_stem_topic_vec = general_stem_topic_vec_maker(topic_type)
     with open(test_data_file, 'r') as file:
@@ -292,4 +316,4 @@ def run_base_combo(output_file = "recommendations/12-25_age_10_plus_highly_rated
 
 #run_correlation_matrix_combo_reduce(TEST_DATA_FILE, "recommendations/12-25_age_10_plus_highly_rated_books/correlation_matrix_combo_reduce")
 
-recommend_with_personalized_emotion(TEST_DATA_FILE)
+recommend_with_age_based_emotion(TEST_DATA_FILE)
