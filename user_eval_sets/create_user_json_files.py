@@ -6,7 +6,7 @@ import random
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CURATED_USERS_PATH = os.path.join(
-    BASE_DIR, "processed_data", "curated_users_20-25.jsonl"
+    BASE_DIR, "processed_data", "curated_users_12-19.jsonl"
 )
 
 STEM_BOOKS_PATH_1 = os.path.join(
@@ -301,6 +301,38 @@ def filter_for_x_high_rated_books(starting_users, stem_books, book_count):
                  
     return matching_users   
 
+def get_users_for_emotion_only(highly_rate_val = 7):
+    matching_users = []
+
+    with open(CURATED_USERS_PATH, 'r', encoding='utf-8') as f:
+        for line in f:
+            if not line.strip():
+                continue
+            
+            user_data = json.loads(line)
+            book_list = user_data.get('book_list', [])
+            
+            high_rating_count = 0
+            for book in book_list:
+                if book.get('rating', 0) >= highly_rate_val:
+                    high_rating_count += 1
+
+            if high_rating_count >= 4:
+                matching_users.append(user_data)
+
+    formatted_users = format_matching_users(matching_users, [])
+
+    out_file_path = os.path.join(
+        BASE_DIR, "user_eval_sets", f"users_emotion_only_where_high_rated_is_{highly_rate_val}.json"
+    )
+
+    with open(out_file_path, 'w', encoding='utf-8') as f:
+        json.dump(formatted_users, f, indent=4, ensure_ascii=False)
+        
+    print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
+
+    
+
 def get_60_40_split(highly_rated_book_count = 6):
     stem_isbns = load_stem_isbns([STEM_BOOKS_PATH_1, STEM_BOOKS_PATH_2, STEM_BOOKS_PATH_3])
     users = get_users_with_at_least_1_STEM_book(stem_isbns)
@@ -357,5 +389,3 @@ def get_4_plus_user_list():
         json.dump(formatted_users, f, indent=4, ensure_ascii=False)
         
     print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
-
-get_60_40_split(highly_rated_book_count=10)
