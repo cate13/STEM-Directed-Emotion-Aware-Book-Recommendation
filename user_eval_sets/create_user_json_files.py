@@ -87,6 +87,43 @@ def filter_users(file_path, target_isbns, description_isbns, x, y = 4):
                 
     return matching_users
 
+def format_matching_users_for_emotion_only(users, highly_rated_vale):
+    formatted_results = []
+
+    for user in users:
+        candidate_eligible = []
+        others = []
+        all_books = user.get('book_list', [])
+        for book in all_books:
+            book_copy = book.copy()
+            if book_copy.get('rating', 0) >= highly_rated_vale:
+                candidate_eligible.append(book_copy)
+            else:
+                others.append(book_copy)
+
+        random.shuffle(candidate_eligible)
+        split_point = math.ceil(len(candidate_eligible) * 0.4)
+        
+        candidate_profile = candidate_eligible[:split_point]
+        
+        # 3. recommendation_list gets:
+        # - The second half of the high-rated non-target books
+        # - All the target_isbns (stem books)
+        # - All low-rated books
+        recommendation_list = candidate_eligible[split_point:] + others
+
+        formatted_user = {
+            "user_id": user.get("user_id"),
+            "age": user.get("age"),
+            "candidate_profile": candidate_profile,
+            "recommendation_list": recommendation_list
+        }
+        
+        formatted_results.append(formatted_user)
+    
+    return formatted_results
+
+
 def format_matching_users(matching_users, target_isbns):
     formatted_results = []
 
@@ -317,10 +354,10 @@ def get_users_for_emotion_only(highly_rate_val = 7):
                 if book.get('rating', 0) >= highly_rate_val:
                     high_rating_count += 1
 
-            if high_rating_count >= 4:
+            if high_rating_count >= 10:
                 matching_users.append(user_data)
 
-    formatted_users = format_matching_users(matching_users, [])
+    formatted_users = format_matching_users_for_emotion_only(matching_users, highly_rate_val)
 
     out_file_path = os.path.join(
         BASE_DIR, "user_eval_sets", f"users_emotion_only_where_high_rated_is_{highly_rate_val}.json"
@@ -389,3 +426,5 @@ def get_4_plus_user_list():
         json.dump(formatted_users, f, indent=4, ensure_ascii=False)
         
     print(f"Successfully saved {len(formatted_users)} users to {out_file_path}")
+
+get_users_for_emotion_only(7) 
