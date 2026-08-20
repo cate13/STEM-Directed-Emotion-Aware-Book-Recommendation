@@ -3,9 +3,13 @@ import pandas as pd
 from statsmodels.stats.inter_rater import fleiss_kappa
 from sklearn.metrics import cohen_kappa_score
 
-df = pd.read_csv("STEM_Annontate/annontated_books_3.csv")
+df = pd.read_csv("STEM_Annontate/Annotated Books - 400.csv")
 
 users = [col for col in df.columns if col.startswith("user_")]
+
+users = [user for user in users if df[user].notna().any()]
+
+print("Users with ratings:", users)
 
 # --------------------------------------------------
 # Pairwise Cohen's kappa
@@ -15,8 +19,14 @@ cohen_results = {}
 for u1, u2 in combinations(users, 2):
     # Drop rows where either rater in the pair has a missing value
     pair_df = df[[u1, u2]].dropna()
-    score = cohen_kappa_score(pair_df[u1], pair_df[u2])
-    cohen_results[f"{u1} vs {u2}"] = score
+
+    # Only calculate if there are ratings to compare
+    if len(pair_df) > 0:
+        score = cohen_kappa_score(
+            pair_df[u1],
+            pair_df[u2]
+        )
+        cohen_results[f"{u1} vs {u2}"] = score
 
 # --------------------------------------------------
 # Fleiss' kappa

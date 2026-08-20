@@ -3,7 +3,7 @@ import os
 import csv
 import random
 
-random.seed(42)
+random.seed(30)
 
 # ---- Paths ----
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,14 +13,14 @@ INPUT_JSONL = os.path.join(
 )
 
 OUTPUT_JSONL = os.path.join(
-    BASE_DIR, "data_exploring", "sample_200.jsonl"
+    BASE_DIR, "data_exploring", "sample_400.jsonl"
 )
 
 OUTPUT_CSV = os.path.join(
-    BASE_DIR, "data_exploring", "sample_200.csv"
+    BASE_DIR, "data_exploring", "sample_400.csv"
 )
 
-SAMPLE_SIZE = 200
+SAMPLE_SIZE = 400
 
 # Read all records
 records = []
